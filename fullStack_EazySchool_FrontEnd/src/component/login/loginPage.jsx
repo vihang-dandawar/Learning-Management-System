@@ -17,10 +17,12 @@ function LoginPage({ setIsAuthenticated, setUserRole }) {
      
       console.log("Login response:", response.data);
 console.log("Token received:", response.data.token);
+console.log("User ID",response.data.userId);
 
 
       if (response.status === 200) {
-        const { token, role } = response.data;
+        const { token, role , userId} = response.data;
+       
 
         const cleanRole = role.replace('ROLE_', '');
 
@@ -29,6 +31,7 @@ console.log("Token received:", response.data.token);
         sessionStorage.setItem('isAuthenticated', 'true');
         sessionStorage.setItem('role', cleanRole);
         sessionStorage.setItem('username', email);
+        sessionStorage.setItem('userId',userId)
 
         // ✅ Update state
         setIsAuthenticated(true);

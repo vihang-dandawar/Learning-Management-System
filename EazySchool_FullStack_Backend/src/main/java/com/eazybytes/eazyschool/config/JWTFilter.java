@@ -55,6 +55,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     System.out.println("🔑 Raw Token: " + token);
                     System.out.println("👤 Extracted Username: " + username);
                     System.out.println("🎭 Extracted Role: " + jwtService.extractRole(token));
+                    System.out.println("Extracted Roll No:"+jwtService.extractUserId(token));
                     System.out.println("🛡 Authorities: " + userDetails.getAuthorities());
 
 

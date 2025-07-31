@@ -64,4 +64,23 @@ public class videoController {
 
 
 
+
+    @GetMapping("/videos/{videoId}/secure-url")
+    public ResponseEntity<?> getProtectedVideoUrl(
+            @PathVariable Long videoId,
+            @RequestParam Long userId) {
+
+        Optional<String> url = videoService.getProtectedVideoUrl(videoId, userId);
+
+        if (url.isPresent()) {
+            return ResponseEntity.ok(url.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Access Denied: Please purchase the course to watch this video.");
+        }
+    }
+
+
+
+
 }

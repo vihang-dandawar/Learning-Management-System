@@ -88,3 +88,42 @@ return axios.post("http://localhost:1011/auth/send-otp",{email})
 export const resetPasswordWithOTP=({email,otp,password})=>{
 return axios.post("http://localhost:1011/auth/reset-password",{email,otp,password});
 }
+
+
+
+
+export const BuyCourse=(PaymentOrderRequest)=>
+{
+ return api.post("/api/payments/create-order",PaymentOrderRequest)
+}
+
+
+
+
+
+
+// export const isCoursePurchasedByUser = (courseId) => {
+//   const token = localStorage.getItem('token');
+//   return axios.get(`http://localhost:1011/purchase/check?courseId=${courseId}`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+// };
+
+
+export const isCoursePurchasedByUser = (courseId) => {
+  return api.get(`/isCoursePurchased?courseId=${courseId}`);
+};
+
+
+
+export const CoursePurchase=(CoursePurchaseRequest)=>
+{
+  return api.post("/api/course-purchase",CoursePurchaseRequest)
+}
+
+
+
+
+

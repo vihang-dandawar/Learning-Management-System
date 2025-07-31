@@ -1,6 +1,7 @@
 package com.eazybytes.eazyschool.service;
 
 import com.eazybytes.eazyschool.model.video;
+import com.eazybytes.eazyschool.repository.CoursePurchasedRepo;
 import com.eazybytes.eazyschool.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ public class videoService {
     VideoRepository videoRepository;
 
 
-
+@Autowired
+    CoursePurchasedRepo coursePurchasedRepo;
 
 
     public video getVideoDetailsById(long id)
@@ -50,6 +52,25 @@ public class videoService {
         return videoRepository.findById(videoId)
                 .map(video::getVideoUrl); // assuming Video class has getVideoUrl()
     }
+
+
+
+    public Optional<String> getProtectedVideoUrl(Long videoId, Long userId) {
+        video videoObj = videoRepository.findById(videoId).orElseThrow();
+
+        Long courseId = videoObj.getCourse().getId(); // assuming each video is linked to a course
+
+        boolean hasAccess = coursePurchasedRepo
+                .findByUserIdAndCourseId(userId, courseId)
+                .isPresent();
+
+        if (hasAccess) {
+            return Optional.ofNullable(videoObj.getVideoUrl());
+        } else {
+            return Optional.empty(); // or throw AccessDeniedException
+        }
+    }
+
 
 
 

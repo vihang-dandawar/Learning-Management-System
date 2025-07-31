@@ -1,5 +1,6 @@
 package com.eazybytes.eazyschool.service;
 
+import com.eazybytes.eazyschool.model.AuthRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,17 +20,21 @@ public class JWTService {
     private final String secretkey = Base64.getEncoder()
             .encodeToString("eazyschooljwtsecretkeyeazyschooljwtsecretkey".getBytes());
 
-    public String generateToken(String username, String role) {
+    public String generateToken(String roles,long userid,String username) {
         Map<String, Object> claims = new HashMap<>();
 
 //        if (!role.startsWith("ROLE_")) {
 //            role = "ROLE_" + role;
 //        }
 
-        claims.put("role", role);
+        claims.put("role",roles);
+        claims.put("userId",userid);
+
+
 
         return Jwts.builder()
                 .subject(username)
+
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hr
                 .claims(claims)
@@ -40,6 +45,11 @@ public class JWTService {
     public String extractUsername(String token) {
         return extractClaims(token, Claims::getSubject);
     }
+
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("userId", Integer.class).longValue();
+    }
+
 
     public String extractRole(String token) {
         return extractAllClaims(token).get("role", String.class);

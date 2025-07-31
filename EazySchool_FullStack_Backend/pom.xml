@@ -85,12 +85,19 @@
 			<scope>runtime</scope> <!-- ✅ For JSON serialization -->
 		</dependency>
 
-
+		<!--  Email dependency for otp-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<version>3.5.4</version>
+		</dependency>
+
+<!--  Razorpay dependency-->
+		<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.4.8</version>
 		</dependency>
 
 

@@ -19,6 +19,7 @@ import EditCourse from './component/Course/EditCourse';
 import AddVideo from './component/Course/AddVideo';
 import EditVideoInfo from './component/Course/EditVideoInfo';
 import ForgetPassword from './component/login/forgetPassword';
+import BuyCoursePage from './component/Payment/BuyCourse';
 
 
 function App() {
@@ -27,12 +28,15 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [isSessionChecked, setIsSessionChecked] = useState(false); // ✅ new
+  const [UserId,setUserId]=useState(0)
 
   useEffect(() => {
     const auth = sessionStorage.getItem('isAuthenticated') === 'true';
     const role = sessionStorage.getItem('role') || '';
+const userId = parseInt(sessionStorage.getItem('userId'), 10);
     setIsAuthenticated(auth);
     setUserRole(role);
+    setUserId(userId)
     setIsSessionChecked(true); // ✅ session read complete
   }, []);
 
@@ -61,12 +65,15 @@ function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/forget-password" element={<ForgetPassword/>}/>
+          <Route path="/buy/:courseId" element={<BuyCoursePage />} />
       <Route
   path="/courses/:courseId"
   element={
     <CourseDetails
       isAuthenticated={isAuthenticated}
       userRole={userRole}
+      userId={UserId}
+      
     />
   }
 />

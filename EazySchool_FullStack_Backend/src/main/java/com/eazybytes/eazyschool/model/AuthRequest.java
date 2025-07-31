@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class AuthRequest {
     @Id
 //    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String password;
 @Enumerated(EnumType.STRING)

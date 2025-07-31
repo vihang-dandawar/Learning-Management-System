@@ -44,8 +44,12 @@ public class loginController {
 
             String role = user.getRoles().name();
             String newRole=role.replace("ROLE_","");
+
+            long userid=user.getId();
+            System.out.println("User id of user is"+user.getId());
+
             // e.g., ROLE_ADMIN or ROLE_USER
-            String token = jwtService.generateToken(user.getEmail(), role); // ✅ generate token
+            String token = jwtService.generateToken(newRole,user.getId(),user.getEmail()); // ✅ generate token
            // String token = jwtService.generateToken(user.getUsername(), role);
             System.out.println("Generated Token: " + token); // ✅ debug
 
@@ -53,7 +57,8 @@ public class loginController {
             return ResponseEntity.ok(Map.of(
                     "message", "Login successful",
                     "token", token,
-                    "role", newRole
+                    "role", newRole,
+                    "userId",userid
             ));
 
         } catch (AuthenticationException e) {

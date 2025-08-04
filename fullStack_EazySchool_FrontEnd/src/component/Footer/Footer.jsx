@@ -10,14 +10,12 @@ function Footer() {
           <div className="row footer-top-29">
             <div className="col-lg-4 col-md-6 footer-list-29">
               <h6 className="footer-title-29">Contact Info</h6>
-              <p className="mb-2 pe-xl-5">
-                Address : Eazy School, 10001, 5th Avenue, #06 lane street, NY - 62617.
+              
+              <p className="mb-2">
+                Phone Number : <a href="tel:+91 8767847085">+91(8767847085)</a>
               </p>
               <p className="mb-2">
-                Phone Number : <a href="tel:+1(21) 234 4567">+1(21) 673 4587</a>
-              </p>
-              <p className="mb-2">
-                Email : <a href="mailto:info@eazyschool.com">info@eazyschool.com</a>
+                Email : <a href="mailto:vihangreddy1234@gmail.com">info@vikkischool.com</a>
               </p>
             </div>
             <div className="col-lg-2 col-md-3 col-6 footer-list-29 mt-md-0 mt-4">
@@ -54,8 +52,8 @@ function Footer() {
             </div>
           </div>
           <p className="copy-footer-29 text-center pt-lg-2 mt-5 pb-2">
-            © 2023 Eazy School. All rights reserved. Design by
-            <a href="https://w3layouts.com/" target="_blank" rel="noopener noreferrer"> W3Layouts</a>
+            © 2023 Vikki School. All rights reserved.
+           
           </p>
         </div>
       </div>

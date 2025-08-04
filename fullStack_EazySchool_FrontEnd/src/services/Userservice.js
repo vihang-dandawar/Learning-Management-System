@@ -13,6 +13,15 @@ export const sendMessage = (formData) => {
   return api.post('/saveMsg', formData); // token auto-injected
 };
 
+
+
+export const changemsgStatus=(id)=>
+{
+  return api.get(`/changeStatus/${id}`)
+}
+
+
+
 // ✅ Login: returns JWT and role
 export const validateCredentials = ({ email, password }) => {
   return api.post('/loginUser', { email, password });
@@ -118,10 +127,25 @@ export const isCoursePurchasedByUser = (courseId) => {
 
 
 
+export const getPurchasedCourses=()=>
+{
+  return api.get("/purchased-courses",)
+}
+
+
 export const CoursePurchase=(CoursePurchaseRequest)=>
 {
   return api.post("/api/course-purchase",CoursePurchaseRequest)
 }
+
+
+
+export const latestCourses=()=>
+{
+   return axios.get("http://localhost:1011/courses/latest");
+}
+
+
 
 
 

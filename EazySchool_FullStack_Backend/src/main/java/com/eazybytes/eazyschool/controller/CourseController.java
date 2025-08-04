@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,21 @@ public class CourseController {
         course  c=courseService.DeleteCourse(id);
         return ResponseEntity.ok(c);
     }
+
+
+
+    @GetMapping("/courses/latest")
+    public List<course> getLatestCourses() {
+        return courseService.getlatest5Courses(); // assuming createdAt exists
+    }
+
+
+
+
+
+
+
+
 
 
 

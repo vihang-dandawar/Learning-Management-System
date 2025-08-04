@@ -78,6 +78,18 @@ public class CourseService {
    }
 
 
+    public List<course> getlatest5Courses() {
+        List<course> course = courseRepository.findLast5Courses();
+        return new ArrayList<>(course);
+
+
+    }
+
+
+
+
+
+
 
 
 

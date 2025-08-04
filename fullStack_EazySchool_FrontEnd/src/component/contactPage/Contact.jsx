@@ -101,21 +101,18 @@ const validateForm = () => {
             </div>
             <div className="col-md-5 ps-lg-5 mt-md-0 mt-5">
               <div className="bg-white p-4 rounded shadow">
-                <div className="mb-4">
-                  <h6><i className="fas fa-building me-2 text-primary"></i>School Address</h6>
-                  <p>Eazy School, 10001, 5th Avenue, #06 lane street, NY - 10017.</p>
-                </div>
+               
                 <div className="mb-4">
                   <h6><i className="fas fa-phone-alt me-2 text-primary"></i>Call Us</h6>
                   <p><a href="tel:+1(21) 234 4567">+1(21) 673 4587</a></p>
                 </div>
                 <div className="mb-4">
                   <h6><i className="fas fa-envelope-open-text me-2 text-primary"></i>Email Us</h6>
-                  <p><a href="mailto:info@eazyschool.com">info@eazyschool.com</a></p>
+                  <p><a href="mailto:vihangreddy1234@gmail.com">info@vikkischool.com</a></p>
                 </div>
                 <div>
                   <h6><i className="fas fa-headphones-alt me-2 text-primary"></i>Customer Support</h6>
-                  <p><a href="mailto:support@eazyschool.com">support@eazyschool.com</a></p>
+                  <p><a href="mailto:vihangreddy1234@gmail.com">support@vikkischool.com</a></p>
                 </div>
               </div>
             </div>

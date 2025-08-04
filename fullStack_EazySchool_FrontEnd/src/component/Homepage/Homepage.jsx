@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './Homepage.css';
+import { latestCourses } from '../../services/Userservice';
 
 const slides = [
   {
@@ -26,7 +27,48 @@ const slides = [
 ];
 
 function Homepage() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+  const [courses,setCourses]=useState([]);
+
+// Add at the top (inside Homepage component)
+const [courseIndex, setCourseIndex] = useState(0);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCourseIndex((prev) => (prev + 1) % courses.length);
+  }, 5000);
+  return () => clearInterval(interval);
+}, [courses]);
+
+const handlePrevCourse = () => {
+  setCourseIndex((prev) => (prev - 1 + courses.length) % courses.length);
+};
+
+const handleNextCourse = () => {
+  setCourseIndex((prev) => (prev + 1) % courses.length);
+};
+
+
+
+
+
+
+
+
+
+useEffect(() => {
+  latestCourses()
+    .then((response) => {
+      setCourses(response.data);
+    })
+    .catch((error) => {
+      console.error('Error fetching latest courses:', error);
+    });
+}, []);
+
+
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % slides.length);
@@ -39,44 +81,68 @@ function Homepage() {
   return (
     <>
       {/* Sliding Banner Section */}
-      <section id="home" className="w3l-banner py-5 position-relative overflow-hidden banner-slider">
-        <button className="banner-nav-btn left" onClick={goToPrev}>
-          <i className="fas fa-chevron-left"></i>
-        </button>
-        <button className="banner-nav-btn right" onClick={goToNext}>
-          <i className="fas fa-chevron-right"></i>
-        </button>
+   <section className="latest-courses py-5 bg-light" id="latest-courses" 
+    style={{
+          backgroundImage: 'url("/public/styles/bg1.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backdropFilter: 'blur(5px)',
+        }}>
 
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`banner-slide container py-4 ${index === currentIndex ? 'active' : ''}`}
-          >
-            <div className="row align-items-center pt-sm-5 pt-4">
-              <div className="col-md-6 banner-left">
-                <h3 className="banner-heading mb-lg-4 mb-3">
-                  {slide.heading}<br />
-                  <span>{slide.subheading}</span>
-                </h3>
-                <p className="banner-sub">{slide.description}</p>
-                <div className="d-flex align-items-center buttons-banner">
-                  <a className="btn btn-style mt-lg-5 mt-4" href="/contact">{slide.buttonText}</a>
-                </div>
-              </div>
-              <div className="col-md-6 text-end mt-md-0 mt-5">
-                {/* Optional: Add image per slide here */}
-              </div>
+  <div className="container">
+    <h3 className="text-center mb-4">Latest Courses</h3>
+    {courses.length > 0 && (
+      <div className="position-relative">
+        <div className="d-flex justify-content-center">
+          <div className="card shadow-sm" style={{ maxWidth: '600px', width: '100%' }}>
+            <img
+              src={courses[courseIndex].imageUrl}
+              className="card-img-top"
+              alt={courses[courseIndex].title}
+              style={{ height: '260px', objectFit: 'cover' }}
+            />
+            <div className="card-body">
+              <h5 className="card-title">{courses[courseIndex].title}</h5>
+              <p className="card-text text-muted">
+                {courses[courseIndex].description.slice(0, 100)}...
+              </p>
+              <p className="card-text">
+                <strong>Category:</strong> {courses[courseIndex].category}
+              </p>
+              <a href={`/courses/${courses[courseIndex].id}`} className="btn btn-primary btn-sm">
+                View Course
+              </a>
             </div>
           </div>
-        ))}
-      </section>
+        </div>
+
+        {/* Navigation Buttons */}
+        <button
+          onClick={handlePrevCourse}
+          className="btn btn-outline-secondary position-absolute top-50 start-0 translate-middle-y    btn btn-danger"
+          style={{ zIndex: 2 }}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+        <button
+          onClick={handleNextCourse}
+          className="btn btn-outline-secondary position-absolute top-50 end-0 translate-middle-y btn btn-danger"
+          style={{ zIndex: 2 }}
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    )}
+  </div>
+</section>
 
       {/* Features Section */}
       <section
         className="services-w3l-block py-5 position-relative text-white"
         id="features"
         style={{
-          backgroundImage: 'url("bg1.jpg")',
+          backgroundImage: 'url("/public/styles/bg1.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -84,7 +150,7 @@ function Homepage() {
         }}
       >
         <div className="overlay" style={{
-          backgroundColor: 'rgba(0, 50, 80, 0.6)',
+          // backgroundColor: 'rgba(0, 50, 80, 0.6)',
           position: 'absolute',
           top: 0,
           left: 0,
@@ -167,7 +233,14 @@ function Homepage() {
 </section> */}
 
 {/* Platform Highlights */}
-<section className="highlights-premium py-5">
+<section className="highlights-premium py-5"
+ style={{
+          backgroundImage: 'url("/public/styles/bg1.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backdropFilter: 'blur(5px)',
+        }}>
   <div className="container text-center">
     <h3>Why Choose LearnPro</h3>
     <div className="row mt-4">
@@ -187,7 +260,14 @@ function Homepage() {
 </section>
 
 {/* Key Statistics */}
-<section className="stats-premium py-5" id="stats">
+<section className="stats-premium py-5" id="stats" 
+ style={{
+          backgroundImage: 'url("/public/styles/bg1.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backdropFilter: 'blur(5px)',
+        }}>
   <div className="container text-center">
     <h3>Our Numbers Speak</h3>
     <div className="row mt-4">

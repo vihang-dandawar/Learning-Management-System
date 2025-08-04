@@ -1,5 +1,6 @@
 package com.eazybytes.eazyschool.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class CoursePurchased {
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "course_id")
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private course course;
 
         private String paymentId;

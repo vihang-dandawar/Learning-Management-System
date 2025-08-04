@@ -7,7 +7,7 @@ import Contact from './component/contactPage/Contact';
 import LoginPage from './component/login/loginPage';
 import Header from './component/Header/Header';
 import Footer from './component/Footer/Footer';
-import UserDashboard from './component/userDashBoard/UserDashBoard';
+
 import AdminDashboard from './component/AdminDashboard/AdminDashboard';
 import Register from './component/Register/Register';
 
@@ -20,6 +20,8 @@ import AddVideo from './component/Course/AddVideo';
 import EditVideoInfo from './component/Course/EditVideoInfo';
 import ForgetPassword from './component/login/forgetPassword';
 import BuyCoursePage from './component/Payment/BuyCourse';
+import UserDashboard from './component/UserDashboard/UserDashBoard';
+import PurchasedCourses from './component/Course/PurchasedCourses';
 
 
 function App() {
@@ -30,10 +32,14 @@ function App() {
   const [isSessionChecked, setIsSessionChecked] = useState(false); // ✅ new
   const [UserId,setUserId]=useState(0)
 
+  
+
   useEffect(() => {
     const auth = sessionStorage.getItem('isAuthenticated') === 'true';
     const role = sessionStorage.getItem('role') || '';
 const userId = parseInt(sessionStorage.getItem('userId'), 10);
+
+
     setIsAuthenticated(auth);
     setUserRole(role);
     setUserId(userId)
@@ -66,6 +72,8 @@ const userId = parseInt(sessionStorage.getItem('userId'), 10);
           <Route path="/contact" element={<Contact />} />
           <Route path="/forget-password" element={<ForgetPassword/>}/>
           <Route path="/buy/:courseId" element={<BuyCoursePage />} />
+          <Route path="/my-courses" element={<PurchasedCourses />} />
+
       <Route
   path="/courses/:courseId"
   element={
@@ -121,8 +129,12 @@ const userId = parseInt(sessionStorage.getItem('userId'), 10);
           <Route path="/register" element={
             <Register setIsAuthenticated={setIsAuthenticated} setUserRole={setUserRole} />
           } />
-          <Route path="/userDashboard" element={
-            <PrivateRoute role="USER"><UserDashboard /></PrivateRoute>
+          <Route path="/userDashboard" 
+          element={
+            <PrivateRoute role="USER">
+              <UserDashboard
+              />
+            </PrivateRoute>
           } />
           <Route path="/adminDashboard" element={
             <PrivateRoute role="ADMIN"><AdminDashboard /></PrivateRoute>

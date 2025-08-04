@@ -21,6 +21,12 @@ function AdminDashboard() {
     }
   };
 
+
+  const changeMsgStatus =async()=>
+  {
+    
+  }
+
   return (
     <>
       {/* Banner */}
@@ -76,6 +82,7 @@ function AdminDashboard() {
                       <th>Mobile</th>
                       <th>Subject</th>
                       <th>Message</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -86,6 +93,7 @@ function AdminDashboard() {
                         <td>{msg.mobileNum}</td>
                         <td>{msg.subject}</td>
                         <td>{msg.message}</td>
+                         <button onClick={()=>{changemsgStatus(msg.id)}}><td>{msg.status}</td> </button>
                       </tr>
                     ))}
                   </tbody>

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -21,6 +22,7 @@ import org.springframework.web.cors.*;
 import java.util.List;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -35,22 +37,35 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginUser",  "/saveMsg").permitAll()
-                        .requestMatchers("/register").permitAll()
-                        .requestMatchers("/allMessages","/createCourse","/courses/{courseId}/videos","/courses/**").hasAuthority("ADMIN")
-                        .requestMatchers("/getAllCourses","/all/courses/getCourseById/**").permitAll()
+                        .requestMatchers(
+                                "/loginUser",
+                                "/register",
+                                "/saveMsg",
+                                "/auth/send-otp",
+                                "/auth/verify-otp",
+                                "/auth/reset-password",
+                                "/getAllCourses",
+                                "/all/courses/getCourseById/**",
+                                "/courses/latest"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/allMessages",
+                                "/createCourse",
+                                "/courses/{courseId}/videos",
+                                "/courses/**"
+                        ).hasAuthority("ADMIN")
                         .requestMatchers("/videos/getLink/{videoId}").authenticated()
-                        .requestMatchers("/auth/send-otp","/auth/verify-otp","/auth/reset-password").permitAll()
+                        .requestMatchers("/purchased-courses").authenticated()
                         .anyRequest().authenticated()
-
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()); // ✅ include this line
+                .authenticationProvider(authenticationProvider());
 
         return http.build();
     }
+
 
     // ✅ Register custom provider
     @Bean

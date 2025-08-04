@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 //import axios from 'axios';
-import { GetCourseById ,BuyCourse, CoursePurchase} from '../../services/Userservice';
+import { GetCourseById ,BuyCourse,CoursePurchase} from '../../services/Userservice';
 
 function BuyCoursePage() {
   const { courseId } = useParams();

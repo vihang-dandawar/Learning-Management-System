@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class AuthRequest {
     @Id
-//    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ Add this
     private Long id;
 
     private String password;

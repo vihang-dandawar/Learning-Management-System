@@ -22,6 +22,8 @@ import ForgetPassword from './component/login/forgetPassword';
 import BuyCoursePage from './component/Payment/BuyCourse';
 import UserDashboard from './component/UserDashboard/UserDashBoard';
 import PurchasedCourses from './component/Course/PurchasedCourses';
+import ExploreCategoriesCard from './component/explore/ExploreCategoriesCard';
+import SearchCourses from './component/Header/SearchCourses';
 
 
 function App() {
@@ -73,6 +75,12 @@ const userId = parseInt(sessionStorage.getItem('userId'), 10);
           <Route path="/forget-password" element={<ForgetPassword/>}/>
           <Route path="/buy/:courseId" element={<BuyCoursePage />} />
           <Route path="/my-courses" element={<PurchasedCourses />} />
+          <Route path ="courses/category/:category" element={<ExploreCategoriesCard/>}></Route>
+          <Route path="/courses/search/:keyword" element={<SearchCourses />} />
+
+
+
+
 
       <Route
   path="/courses/:courseId"

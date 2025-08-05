@@ -147,6 +147,15 @@ export const latestCourses=()=>
 
 
 
+export const getCategoriesOfCourses=()=>
+{
+  return axios.get("http://localhost:1011/courses/getCategory")
+}
+
+export const searchCourse = (keyword) => {
+  return axios.get(`http://localhost:1011/courses/search/${encodeURIComponent(keyword)}`);
+}
+
 
 
 

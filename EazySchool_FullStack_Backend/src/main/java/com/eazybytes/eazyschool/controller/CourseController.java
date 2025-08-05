@@ -83,6 +83,23 @@ public class CourseController {
         return courseService.getlatest5Courses(); // assuming createdAt exists
     }
 
+    @GetMapping("/courses/category/{category}")
+    public ResponseEntity<List<course>> getCoursesByCategory(@PathVariable String category) {
+        List<course> courses = courseService.getCourseByCategory(category);
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/courses/getCategory")
+    public ResponseEntity<List<String>> getCoursesByCategory() {
+        List<String> courses = courseService.getCategories();
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/courses/search/{keyword}")
+    public ResponseEntity<List<course>> searchCourses(@PathVariable String keyword) {
+        List<course> courses = courseService.searchCourse(keyword);
+        return ResponseEntity.ok(courses);
+    }
 
 
 

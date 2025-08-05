@@ -1,5 +1,6 @@
 package com.eazybytes.eazyschool.service;
 
+import com.eazybytes.eazyschool.model.CourseSpecification;
 import com.eazybytes.eazyschool.model.course;
 import com.eazybytes.eazyschool.model.video;
 import com.eazybytes.eazyschool.repository.CourseRepository;
@@ -83,6 +84,23 @@ public class CourseService {
         return new ArrayList<>(course);
 
 
+    }
+
+    public List<course> getCourseByCategory(String category)
+    {
+        List<course> course=courseRepository.findBycategory(category);
+        return new ArrayList<>(course);
+    }
+
+
+    public List<String> getCategories()
+    {
+        return courseRepository.findDistinctCategories();
+    }
+
+
+    public List<course> searchCourse(String keyword) {
+        return courseRepository.findAll(CourseSpecification.searchByKeywords(keyword));
     }
 
 

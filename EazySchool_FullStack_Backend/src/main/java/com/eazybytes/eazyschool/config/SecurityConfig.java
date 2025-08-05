@@ -46,13 +46,17 @@ public class SecurityConfig {
                                 "/auth/reset-password",
                                 "/getAllCourses",
                                 "/all/courses/getCourseById/**",
-                                "/courses/latest"
+                                "/courses/latest",
+                                "/courses/category/{category}",
+                                "/courses/getCategory",
+                                "/courses/search/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/allMessages",
                                 "/createCourse",
                                 "/courses/{courseId}/videos",
                                 "/courses/**"
+
                         ).hasAuthority("ADMIN")
                         .requestMatchers("/videos/getLink/{videoId}").authenticated()
                         .requestMatchers("/purchased-courses").authenticated()

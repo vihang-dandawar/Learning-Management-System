@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css'
+import { getCategoriesOfCourses } from '../../services/Userservice';
 
 function Header({ isAuthenticated, role,username = '', onLogout }) {
+
+
+
+const [categories, setCategories] = useState([]);
+const [showCategories, setShowCategories] = useState(false);
+
+const fetchCategories = async () => {
+  try {
+    const response = await getCategoriesOfCourses(); // ✅ call the function
+    const data = await response.data;              
+    setCategories(data);                             // ✅ store the array
+    console.log("Fetched categories:", data);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+};
+
+
+
+
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -23,7 +44,8 @@ function Header({ isAuthenticated, role,username = '', onLogout }) {
   const handleSearch = (e) => {
     e.preventDefault();
     console.log('Search for:', searchTerm);
-    // navigate(`/search?query=${searchTerm}`);
+   navigate(`/courses/search/${searchTerm}`);
+
   };
   const handleDashboardNavigation = () => {
   if (isAuthenticated) {
@@ -47,10 +69,10 @@ function Header({ isAuthenticated, role,username = '', onLogout }) {
 let Logoname;
 if(role==="ADMIN")
 {
-  Logoname="EazySchool Admin"
+  Logoname="VikkiSchool Admin"
 }
 else
-  Logoname="EazySchool"
+  Logoname="VikkiSchool"
 
   return (
 <header id="site-header" className="fixed-top clean-header">
@@ -65,12 +87,40 @@ else
       </Link>
 
       {/* Explore Button */}
-      <button
-        className="btn btn-outline-light me-3"
-        onClick={() => navigate('/explore')}
-      >
-        Explore
-      </button>
+
+
+    <div
+  className="position-relative"
+  onMouseEnter={() => {
+    fetchCategories();
+    setShowCategories(true);
+  }}
+  onMouseLeave={() => setShowCategories(false)}
+>
+  <button className="btn btn-outline-light me-3">Explore</button>
+
+  {showCategories && (
+    <div
+      className="position-absolute bg-white text-dark shadow p-3 rounded"
+      style={{ top: '100%', left: 0, zIndex: 1000, minWidth: '200px' }}
+    >
+      {categories.map((cat, index) => (
+        <div
+          key={index}
+          className="category-item"
+          style={{ padding: '5px 10px', cursor: 'pointer' }}
+          onClick={() => {
+            navigate(`/courses/category/${cat}`);
+            setShowCategories(false);
+          }}
+        >
+          {cat}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
       {/* Search Bar */}
       <form className="d-flex me-auto" onSubmit={handleSearch} style={{ flexGrow: 1, maxWidth: '400px' }}>

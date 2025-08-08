@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { RegisterNewUser } from '../../services/Userservice';
 
 function Register({ setIsAuthenticated, setUserRole }) {
   const [formData, setFormData] = useState({
-    // username: '',
-     fullName: '',
+    fullName: '',
     email: '',
     age: '',
     password: '',
@@ -27,56 +25,89 @@ function Register({ setIsAuthenticated, setUserRole }) {
     e.preventDefault();
     try {
       await RegisterNewUser(formData);
-      console.log(formData.roles)
       setMsg('✅ Registration successful!');
       setIsAuthenticated(true);
       setUserRole('USER');
 
       sessionStorage.setItem('isAuthenticated', 'true');
-      sessionStorage.setItem('role', formData.roles === 'USER');
+      sessionStorage.setItem('role', 'USER');
       sessionStorage.setItem('username', formData.email);
       sessionStorage.setItem('password', formData.password);
-      navigate('/userDashboard');
 
-     
+      navigate('/userDashboard');
     } catch (err) {
       setMsg('❌ Registration failed. Please try again.');
     }
   };
 
   return (
-    <section className="w3l-contact py-5">
-      <div className="container py-md-5 py-4">
-        <div className="title-main text-center mx-auto mb-md-5 mb-4" style={{ maxWidth: '500px' }}>
-          <h3 className="title-style">Create an Account</h3>
-          {msg && <div className={`alert ${msg.includes("success") ? "alert-success" : "alert-danger"}`}>{msg}</div>}
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center px-4">
+      <div className="w-full max-w-md p-8 bg-gray-900 text-white rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold text-center mb-6">Register</h2>
 
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <form onSubmit={handleSubmit} className="signin-form p-4 border rounded bg-light shadow">
-              <div className="mb-3">
-                <input type="text" name="fullName" className="form-control" placeholder="Full Name" value={formData.fullName} onChange={handleChange} required />
-              </div>
-               <div className="mb-3">
-                <input type="number" name="age" className="form-control" placeholder="Age" value={formData.age} onChange={handleChange} required />
-              </div>
-              <div className="mb-4">
-                <input type="email" name="email" className="form-control" placeholder="Email" value={formData.email} onChange={handleChange} required />
-              </div>
-              {/* <div className="mb-3">
-                <input type="text" name="username" className="form-control" placeholder="Username" value={formData.username} onChange={handleChange} required />
-              </div> */}
-              <div className="mb-3">
-                <input type="password" name="password" className="form-control" placeholder="Password" value={formData.password} onChange={handleChange} required />
-              </div>
-             
-              <button type="submit" className="btn btn-primary w-100">Register</button>
-            </form>
+        {msg && (
+          <div className={`mb-4 text-sm font-medium p-3 rounded ${msg.includes("success") ? "bg-green-800 text-green-100" : "bg-red-800 text-red-100"}`}>
+            {msg}
           </div>
-        </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="text"
+            name="fullName"
+            placeholder="Full Name"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="number"
+            name="age"
+            placeholder="Age"
+            value={formData.age}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-600 bg-gray-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+          >
+            Register
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-gray-400 text-sm">
+          Already have an account?{' '}
+          <a href="/login" className="text-blue-400 hover:underline">
+            Login here
+          </a>
+        </p>
       </div>
-    </section>
+    </div>
   );
 }
 

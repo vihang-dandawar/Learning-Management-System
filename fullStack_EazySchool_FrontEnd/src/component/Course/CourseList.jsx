@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GetAllCourses } from '../../services/Userservice';
-import './CourseList.css'; // Custom CSS
 
 function CourseList() {
   const [courses, setCourses] = useState([]);
@@ -27,35 +26,35 @@ function CourseList() {
   };
 
   return (
-    <div className="container py-5">
-      <h2 className="mb-4 text-center">📚 Explore Our Premium Courses</h2>
+    <div className="min-h-screen bg-gray-900 text-white py-10 px-4 sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-bold text-center mb-10">📚 Explore Our Premium Courses</h2>
 
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="bg-red-500 text-white text-center py-2 rounded mb-4">{error}</div>}
 
-      <div className="row">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {courses.map((course) => (
-          <div className="col-md-4 mb-4" key={course.id} >
-            <div className="card course-card shadow-sm rounded-4 border-0">
-              <img
-                src={course.imageUrl}
-                className="card-img-top rounded-top-4"
-                alt={course.title}
-                style={{ height: '180px', objectFit: 'cover' }}
-              />
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title fw-semibold">{course.title}</h5>
-                <p className="card-text text-muted description">{course.description}</p>
-                <p className="mb-1"><strong>Instructor:</strong> {course.instructor}</p>
-                <p className="mb-2"><strong>Category:</strong> {course.category}</p>
-                <div className="d-flex justify-content-between align-items-center mt-auto">
-                  <span className="badge bg-success fs-6">₹{course.price}</span>
-                  <button
-                    className="btn btn-outline-primary btn-sm rounded-pill px-3"
-                    onClick={() => handleViewCourse(course.id)}
-                  >
-                    View Course
-                  </button>
-                </div>
+          <div
+            key={course.id}
+            className="bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col"
+          >
+            <img
+              src={course.imageUrl}
+              alt={course.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-5 flex flex-col flex-grow">
+              <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
+              <p className="text-gray-300 text-sm line-clamp-2 mb-3">{course.description}</p>
+              <p className="text-sm mb-1"><span className="font-semibold">Instructor:</span> {course.instructor}</p>
+              <p className="text-sm mb-3"><span className="font-semibold">Category:</span> {course.category}</p>
+              <div className="mt-auto flex justify-between items-center">
+                <span className="text-green-400 font-semibold text-lg">₹{course.price}</span>
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-sm transition"
+                  onClick={() => handleViewCourse(course.id)}
+                >
+                  View Course
+                </button>
               </div>
             </div>
           </div>
@@ -63,7 +62,7 @@ function CourseList() {
       </div>
 
       {courses.length === 0 && !error && (
-        <p className="text-center text-muted">No courses available.</p>
+        <p className="text-center text-gray-400 mt-8">No courses available.</p>
       )}
     </div>
   );

@@ -22,7 +22,7 @@ import ForgetPassword from './component/login/forgetPassword';
 import BuyCoursePage from './component/Payment/BuyCourse';
 import UserDashboard from './component/UserDashboard/UserDashBoard';
 import PurchasedCourses from './component/Course/PurchasedCourses';
-import ExploreCategoriesCard from './component/explore/ExploreCategoriesCard';
+import ExploreCategoriesCard from './component/explore/CoursesByCategory';
 import SearchCourses from './component/Header/SearchCourses';
 
 

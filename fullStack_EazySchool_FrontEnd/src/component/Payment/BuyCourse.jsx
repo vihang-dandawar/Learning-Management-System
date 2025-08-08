@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-//import axios from 'axios';
-import { GetCourseById ,BuyCourse,CoursePurchase} from '../../services/Userservice';
+import { GetCourseById, BuyCourse, CoursePurchase } from '../../services/Userservice';
 
 function BuyCoursePage() {
   const { courseId } = useParams();
@@ -9,7 +8,6 @@ function BuyCoursePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch course details (optional)
     GetCourseById(courseId)
       .then((res) => {
         setCourse(res.data);
@@ -21,122 +19,94 @@ function BuyCoursePage() {
       });
   }, [courseId]);
 
-
-const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => {
-      resolve(true);
-    };
-    script.onerror = () => {
-      resolve(false);
-    };
-    document.body.appendChild(script);
-  });
-};
-
-
-
-
-
-
-
-const handlePayment = async () => {
-  const isLoaded = await loadRazorpayScript();
-
-  if (!isLoaded) {
-    alert('Failed to load Razorpay SDK. Check your internet connection.');
-    return;
-  }
-
-  try {
-    const res = await BuyCourse({
-      amount: course.price ,
-      currency: 'INR',
-      receiptId: `receipt_course_${course.id}`,
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
     });
+  };
 
-    const { id: order_id, amount, currency } = res.data;
-    const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY;
+  const handlePayment = async () => {
+    const isLoaded = await loadRazorpayScript();
+    if (!isLoaded) {
+      alert('Failed to load Razorpay SDK. Check your internet connection.');
+      return;
+    }
 
+    try {
+      const res = await BuyCourse({
+        amount: course.price,
+        currency: 'INR',
+        receiptId: `receipt_course_${course.id}`,
+      });
 
+      const { id: order_id, amount, currency } = res.data;
+      const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY;
 
-    
+      const options = {
+        key: razorpayKey,
+        amount,
+        currency,
+        name: 'LMS Academy',
+        description: `Purchase: ${course.title}`,
+        order_id,
+        handler: async function (response) {
+          try {
+            await CoursePurchase({
+              courseId: course.id,
+              razorpayPaymentId: response.razorpay_payment_id,
+            });
+            alert('✅ Purchase recorded successfully!');
+          } catch (error) {
+            console.error('Error recording purchase:', error);
+            alert('Payment succeeded but purchase not saved!');
+          }
+        },
+        prefill: {
+          name: 'Student User',
+          email: 'student@example.com',
+          contact: '9999999999',
+        },
+        notes: {
+          courseId: course.id,
+        },
+        theme: {
+          color: '#0d6efd',
+        },
+      };
 
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (err) {
+      console.error('❌ Payment error:', err);
+      alert('❌ Failed to start payment');
+    }
+  };
 
-    const options = {
-      key: razorpayKey,
-      amount,
-      currency,
-      name: 'LMS Academy',
-      description: `Purchase: ${course.title}`,
-      order_id,
-
-
-
-     handler: async function (response) {
-  console.log("✅ Payment successful:", response);
-
-  try {
-    await CoursePurchase({
-      courseId: course.id,
-      razorpayPaymentId: response.razorpay_payment_id
-    });
-
-    alert('✅ Purchase recorded successfully!');
-    // optionally redirect or update state
-    // setIsPurchased(true);
-  } 
-
- catch (error) {
-    console.error('Error recording purchase:', error);
-    alert('Payment succeeded but purchase not saved!');
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900 text-white text-lg">
+        Loading course...
+      </div>
+    );
   }
-}
-,
-
-
-
-
-
-
-
-
-      prefill: {
-        name: 'Student User',
-        email: 'student@example.com',
-        contact: '9999999999',
-      },
-      notes: {
-        courseId: course.id,
-      },
-      theme: {
-        color: '#0d6efd',
-      },
-    };
-
-    const razor = new window.Razorpay(options);
-    razor.open();
-  } catch (err) {
-    console.error('❌ Payment error:', err);
-    alert('❌ Failed to start payment');
-  }
-};
- 
-
-
-
-  if (loading) return <div className="text-center mt-5">Loading course...</div>;
 
   return (
-    <div className="container py-5 text-center">
-      <h2>Buy: {course.title}</h2>
-      <p className="text-muted">Instructor: {course.instructor}</p>
-      <p><strong>Price:</strong> ₹{course.price}</p>
-      <button className="btn btn-success px-4 py-2 mt-3" onClick={handlePayment}>
-        Pay ₹{course.price}
-      </button>
+    <div className="min-h-screen bg-gray-900 text-white px-4 py-12 flex items-center justify-center">
+      <div className="max-w-lg w-full bg-gray-800 rounded-lg shadow-xl p-8 text-center">
+        <h2 className="text-3xl font-semibold mb-4">{course.title}</h2>
+        <p className="text-sm text-gray-400 mb-1">Instructor: {course.instructor}</p>
+        <p className="text-lg text-gray-100 font-medium mb-6">Price: ₹{course.price}</p>
+        <button
+          onClick={handlePayment}
+          className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded transition duration-300 w-full"
+        >
+          Pay ₹{course.price}
+        </button>
+      </div>
     </div>
   );
 }

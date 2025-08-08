@@ -6,7 +6,6 @@ import {
   getVideoLink,
   isCoursePurchasedByUser,
 } from '../../services/Userservice';
-import './CourseDetails.css';
 
 function CourseDetails({ isAuthenticated, userRole, userId }) {
   const [course, setCourse] = useState(null);
@@ -27,8 +26,6 @@ function CourseDetails({ isAuthenticated, userRole, userId }) {
       setLoadingPurchaseStatus(false);
     }
   }, [courseId, userId]);
-
-console.log("Admin->",isAdmin, "authenticate->",isAuthenticated)
 
   const fetchCourseDetails = async () => {
     try {
@@ -54,20 +51,17 @@ console.log("Admin->",isAdmin, "authenticate->",isAuthenticated)
     setVideoUrls(urls);
   };
 
- const checkPurchaseStatus = async () => {
-  try {
-    const { data } = await isCoursePurchasedByUser(courseId);
-    setIsPurchased(data);
-    console.log("is Purchased->", data);  // ✅ log actual response value
-    console.log("Admin->", isAdmin, "authenticate->", isAuthenticated);
-  } catch (err) {
-    console.error('Error checking purchase status:', err);
-    setIsPurchased(false);
-  } finally {
-    setLoadingPurchaseStatus(false);
-  }
-};
-
+  const checkPurchaseStatus = async () => {
+    try {
+      const { data } = await isCoursePurchasedByUser(courseId);
+      setIsPurchased(data);
+    } catch (err) {
+      console.error('Error checking purchase status:', err);
+      setIsPurchased(false);
+    } finally {
+      setLoadingPurchaseStatus(false);
+    }
+  };
 
   const handleDeleteVideo = async (videoId) => {
     if (!window.confirm('Are you sure you want to delete this video?')) return;
@@ -82,40 +76,58 @@ console.log("Admin->",isAdmin, "authenticate->",isAuthenticated)
 
   const handleBuyCourse = () => navigate(`/buy/${courseId}`);
 
-  if (error) return <div className="alert alert-danger mt-4">{error}</div>;
-  if (!course || loadingPurchaseStatus) return <div className="text-center mt-4">Loading...</div>;
+  if (error)
+    return <div className="text-red-500 bg-red-200 p-4 mt-4 rounded">{error}</div>;
+
+  if (!course || loadingPurchaseStatus)
+    return <div className="text-center mt-6 text-gray-300">Loading...</div>;
 
   return (
-    <div className="container py-5">
-      <button className="btn btn-outline-dark mb-4 fw-bold" onClick={() => navigate(-1)}>
+    <div className="min-h-screen bg-gray-900 text-gray-200 px-4 py-8">
+      <button
+        className="mb-6 text-sm border border-gray-500 px-4 py-2 rounded hover:bg-gray-700 transition"
+        onClick={() => navigate(-1)}
+      >
         ← Back to Courses
       </button>
 
-      <div className="row g-4 align-items-center course-header bg-white rounded shadow p-4 mb-4">
-        <div className="col-md-5">
-          <img src={course.imageUrl} className="img-fluid rounded shadow-sm course-image" alt={course.title} />
+      {/* Course Header */}
+      <div className="grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl shadow-lg p-6 mb-10">
+        <div>
+          <img
+            src={course.imageUrl}
+            alt={course.title}
+            className="rounded-lg w-full h-auto object-cover shadow"
+          />
         </div>
-        <div className="col-md-7">
-          <h2 className="fw-bold text-primary course-title">{course.title}</h2>
-          <p className="text-muted course-description">{course.description}</p>
-          <p><strong>🎓 Instructor:</strong> {course.instructor}</p>
-          <p><strong>📚 Category:</strong> {course.category}</p>
-          <p><strong>💰 Price:</strong> ₹{course.price}</p>
+        <div>
+          <h2 className="text-3xl font-bold text-white mb-3">{course.title}</h2>
+          <p className="text-gray-400 mb-4">{course.description}</p>
+          <p><span className="font-semibold text-white">🎓 Instructor:</span> {course.instructor}</p>
+          <p><span className="font-semibold text-white">📚 Category:</span> {course.category}</p>
+          <p><span className="font-semibold text-white">💰 Price:</span> ₹{course.price}</p>
 
           {!isAdmin && isAuthenticated && !isPurchased && (
-            <button className="btn btn-success buy-btn" onClick={handleBuyCourse}>Buy Now</button>
+            <button
+              className="mt-5 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
+              onClick={handleBuyCourse}
+            >
+              Buy Now
+            </button>
           )}
 
           {isAdmin && (
-            <div className="mt-4">
+            <div className="mt-6 flex flex-wrap gap-3">
               <button
-                className="btn btn-outline-warning me-2 fw-semibold"
-                onClick={() => navigate(`/courses/${course.id}/edit`)}>
+                className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition"
+                onClick={() => navigate(`/courses/${course.id}/edit`)}
+              >
                 ✏️ Edit Course
               </button>
               <button
-                className="btn btn-outline-primary fw-semibold"
-                onClick={() => navigate(`/courses/${course.id}/add-video`)}>
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                onClick={() => navigate(`/courses/${course.id}/add-video`)}
+              >
                 ➕ Add Videos
               </button>
             </div>
@@ -123,56 +135,71 @@ console.log("Admin->",isAdmin, "authenticate->",isAuthenticated)
         </div>
       </div>
 
-      <h4 className="text-secondary fw-bold mb-3">📺 Course Videos</h4>
-      <div className="row">
+      {/* Videos Section */}
+      <h4 className="text-2xl font-semibold mb-5">📺 Course Videos</h4>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {course.videos?.length ? (
           course.videos.map((video, idx) => (
-            <div className="col-md-4 col-sm-6 mb-4" key={video.id}>
-              <div className="card video-card h-100 border-0 shadow rounded-4">
-                <div className="ratio ratio-16x9 rounded-top overflow-hidden">
-                  {(isAdmin || (isAuthenticated && isPurchased)) ? (
-                    videoUrls[video.id] ? (
-                      <iframe
-                        src={
-                          videoUrls[video.id].includes('youtu.be/')
-                            ? videoUrls[video.id].replace('https://youtu.be/', 'https://www.youtube.com/embed/').split('?')[0]
-                            : videoUrls[video.id].replace('watch?v=', 'embed/')
-                        }
-                        title={`Video ${idx + 1}`}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    ) : (
-                      <div className="d-flex justify-content-center align-items-center h-100 bg-dark text-white">
-                        <p className="text-center">⏳ Loading video...</p>
-                      </div>
-                    )
+            <div key={video.id} className="bg-gray-800 rounded-lg shadow p-4 flex flex-col justify-between h-full">
+              <div className="aspect-w-16 aspect-h-9 mb-4">
+                {(isAdmin || (isAuthenticated && isPurchased)) ? (
+                  videoUrls[video.id] ? (
+                    <iframe
+                      src={
+                        videoUrls[video.id].includes('youtu.be/')
+                          ? videoUrls[video.id].replace('https://youtu.be/', 'https://www.youtube.com/embed/').split('?')[0]
+                          : videoUrls[video.id].replace('watch?v=', 'embed/')
+                      }
+                      title={`Video ${idx + 1}`}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="rounded w-full h-full"
+                    />
                   ) : (
-                    <div className="d-flex justify-content-center align-items-center h-100 bg-dark text-white">
-                      <p className="text-center">🔒 Buy this course to unlock videos</p>
+                    <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded">
+                      <p className="text-sm">⏳ Loading video...</p>
                     </div>
+                  )
+                ) : (
+                  <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded">
+                    <p className="text-sm">🔒 Buy this course to unlock videos</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col h-full">
+                <h6 className="font-medium mb-1">{idx + 1}. {video.title}</h6>
+                <small className="text-gray-400 mb-2">
+                  ⏱️ {video.duration} min{" "}
+                  {parseFloat(video.duration) < 2 && (
+                    <span className="bg-yellow-300 text-yellow-900 px-2 py-0.5 text-xs rounded ml-2">
+                      Short
+                    </span>
                   )}
-                </div>
-                <div className="card-body px-3 py-3 d-flex flex-column">
-                  <h6 className="card-title fw-semibold mb-1">{idx + 1}. {video.title}</h6>
-                  <small className="text-muted mb-2">⏱️ {video.duration} min {parseFloat(video.duration) < 2 && <span className="badge bg-warning text-dark ms-2">Short</span>}</small>
-                  {isAdmin && (
-                    <div className="d-flex gap-2 mt-auto">
-                      <button className="btn btn-outline-primary btn-sm" onClick={() => navigate(`/videos/updateInfo/${video.id}`)}>
-                        ✏️ Edit Info
-                      </button>
-                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteVideo(video.id)}>
-                        🗑️ Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
+                </small>
+
+                {isAdmin && (
+                  <div className="mt-auto flex gap-2">
+                    <button
+                      className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+                      onClick={() => navigate(`/videos/updateInfo/${video.id}`)}
+                    >
+                      ✏️ Edit
+                    </button>
+                    <button
+                      className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                      onClick={() => handleDeleteVideo(video.id)}
+                    >
+                      🗑️ Delete
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))
         ) : (
-          <p className="text-muted">No videos uploaded yet.</p>
+          <p className="text-gray-400">No videos uploaded yet.</p>
         )}
       </div>
     </div>

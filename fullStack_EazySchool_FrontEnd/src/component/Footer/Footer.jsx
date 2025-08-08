@@ -1,61 +1,67 @@
-
 // FooterComponent.js
 import React from 'react';
 
 function Footer() {
   return (
-    <footer className="w3l-footer-29-main">
-      <div className="footer-29 pt-5 pb-4">
-        <div className="container pt-md-4">
-          <div className="row footer-top-29">
-            <div className="col-lg-4 col-md-6 footer-list-29">
-              <h6 className="footer-title-29">Contact Info</h6>
-              
-              <p className="mb-2">
-                Phone Number : <a href="tel:+91 8767847085">+91(8767847085)</a>
-              </p>
-              <p className="mb-2">
-                Email : <a href="mailto:vihangreddy1234@gmail.com">info@vikkischool.com</a>
-              </p>
-            </div>
-            <div className="col-lg-2 col-md-3 col-6 footer-list-29 mt-md-0 mt-4">
-              <ul>
-                <h6 className="footer-title-29">Quick Links</h6>
-                <li><a>About Us</a></li>
-                <li><a>Courses</a></li>
-                <li><a>Become a Teacher</a></li>
-                <li><a>Contact Us</a></li>
-                <li><a>Career</a></li>
-              </ul>
-            </div>
-            <div className="col-lg-2 col-md-3 col-6 ps-lg-5 ps-lg-4 footer-list-29 mt-md-0 mt-4">
-              <ul>
-                <h6 className="footer-title-29">Explore</h6>
-                <li><a>Blog Posts</a></li>
-                <li><a>Privacy policy</a></li>
-                <li><a>Contact Us</a></li>
-                <li><a>License & uses</a></li>
-                <li><a>Courses</a></li>
-              </ul>
-            </div>
-            <div className="col-lg-4 col-md-6 col-sm-8 footer-list-29 mt-lg-0 mt-4 ps-lg-5">
-              <h6 className="footer-title-29">Subscribe</h6>
-              <form action="#" className="subscribe d-flex" method="post">
-                <input type="email" name="email" placeholder="Email Address" required="" />
-                <button className="button-style">
-                  <span className="fa fa-paper-plane" aria-hidden="true"></span>
-                </button>
-              </form>
-              <p className="mt-3">
-                Subscribe to our mailing list and get updates to your email inbox.
-              </p>
-            </div>
-          </div>
-          <p className="copy-footer-29 text-center pt-lg-2 mt-5 pb-2">
-            © 2023 Vikki School. All rights reserved.
-           
+    <footer className="bg-[#0f0f0f] bg-opacity-95 text-gray-200 py-12 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+        
+        {/* Contact Info */}
+        <div>
+          <h2 className="text-xl font-semibold mb-5">Contact</h2>
+          <p className="text-sm mb-2">
+            Phone: <a href="tel:+918767847085" className="hover:text-white transition-colors">+91 87678 47085</a>
+          </p>
+          <p className="text-sm">
+            Email: <a href="mailto:info@vikkischool.com" className="hover:text-white transition-colors">info@vikkischool.com</a>
           </p>
         </div>
+
+        {/* Quick Links */}
+        <div>
+          <h2 className="text-xl font-semibold mb-5">Quick Links</h2>
+          <ul className="space-y-3 text-sm">
+            <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Courses</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Become a Teacher</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Career</a></li>
+          </ul>
+        </div>
+
+        {/* Explore */}
+        <div>
+          <h2 className="text-xl font-semibold mb-5">Explore</h2>
+          <ul className="space-y-3 text-sm">
+            <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">License</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Courses</a></li>
+          </ul>
+        </div>
+
+        {/* Subscribe */}
+        <div>
+          <h2 className="text-xl font-semibold mb-5">Subscribe</h2>
+          <form className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3">
+            <input
+              type="email"
+              placeholder="Email Address"
+              className="w-full px-4 py-2 rounded bg-white text-black text-sm focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 px-4 py-2 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+            >
+              <i className="fa fa-paper-plane" aria-hidden="true"></i>
+            </button>
+          </form>
+          <p className="text-xs mt-3 text-gray-300">Get updates and news in your inbox.</p>
+        </div>
+      </div>
+
+      <div className="text-center text-xs text-gray-400 mt-12 border-t border-gray-600 pt-5">
+        © 2025 Vikki School. All rights reserved.
       </div>
     </footer>
   );

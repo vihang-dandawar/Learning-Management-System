@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CreateCourse } from '../../services/Userservice';
-import './CourseForm.css';
-import { useNavigate } from 'react-router-dom'; // ✅ import
+import { useNavigate } from 'react-router-dom';
 
 const CourseForm = () => {
   const navigate = useNavigate();
@@ -31,52 +30,89 @@ const CourseForm = () => {
   };
 
   return (
-    <div className="container mt-5 d-flex justify-content-center">
-      <div className="card course-form-card shadow-lg p-4 w-100" style={{ maxWidth: '600px' }}>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 px-4 py-8">
+      <div className="bg-gray-950 text-white shadow-xl rounded-lg p-8 w-full max-w-xl">
         
         {/* 🔙 Back Button */}
-        <div className="mb-3">
-          <button className="btn btn-outline-secondary btn-sm" onClick={() => navigate(-1)}>
+        <div className="mb-4">
+          <button
+            className="text-sm text-gray-400 hover:text-gray-200 transition"
+            onClick={() => navigate(-1)}
+          >
             ← Back
           </button>
         </div>
 
-        <h3 className="text-center mb-4 text-primary fw-bold">Create a New Course</h3>
+        <h2 className="text-2xl font-bold text-center text-blue-400 mb-6">Create a New Course</h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Title</label>
-            <input name="title" onChange={handleChange} className="form-control" required />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Title</label>
+            <input
+              name="title"
+              required
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Description</label>
-            <textarea name="description" rows="3" onChange={handleChange} className="form-control" required />
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
+            <textarea
+              name="description"
+              rows="3"
+              required
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Instructor</label>
-            <input name="instructor" onChange={handleChange} className="form-control" required />
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Instructor</label>
+            <input
+              name="instructor"
+              required
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Price ($)</label>
-            <input name="price" type="number" onChange={handleChange} className="form-control" required />
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Price ($)</label>
+            <input
+              name="price"
+              type="number"
+              required
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label fw-semibold">Category</label>
-            <input name="category" onChange={handleChange} className="form-control" required />
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Category</label>
+            <input
+              name="category"
+              required
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-          <div className="mb-4">
-            <label className="form-label fw-semibold">Course Thumbnail URL</label>
-            <input name="imageUrl" onChange={handleChange} className="form-control" />
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Course Thumbnail URL</label>
+            <input
+              name="imageUrl"
+              onChange={handleChange}
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-          <div className="d-grid">
-            <button className="btn btn-primary btn-lg">🚀 Create Course</button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-2 rounded shadow-lg"
+          >
+            🚀 Create Course
+          </button>
         </form>
       </div>
     </div>

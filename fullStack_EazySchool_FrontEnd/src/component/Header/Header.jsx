@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Header.css'
 import { getCategoriesOfCourses } from '../../services/Userservice';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
-function Header({ isAuthenticated, role,username = '', onLogout }) {
-
-
-
-const [categories, setCategories] = useState([]);
-const [showCategories, setShowCategories] = useState(false);
-
-const fetchCategories = async () => {
-  try {
-    const response = await getCategoriesOfCourses(); // ✅ call the function
-    const data = await response.data;              
-    setCategories(data);                             // ✅ store the array
-    console.log("Fetched categories:", data);
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
-};
-
-
-
-
+function Header({ isAuthenticated, role, username = '', onLogout }) {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [showCategories, setShowCategories] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await getCategoriesOfCourses();
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   const handleLogout = () => {
     onLogout();
@@ -43,166 +35,193 @@ const fetchCategories = async () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('Search for:', searchTerm);
-   navigate(`/courses/search/${searchTerm}`);
-
+    navigate(`/courses/search/${searchTerm}`);
   };
-  const handleDashboardNavigation = () => {
-  if (isAuthenticated) {
-    console.log("authhhh")
-    if (role === "ADMIN") {
-      console.log("adminnnn")
-      console.log(role)
-      navigate("/adminDashboard");
-    } else{
-      
-      console.log("userrr")
-      console.log(role)
-      navigate("/userDashboard");
-    }
-  } else {
-    console.log("notauthhhh")
-    navigate("/login");
-  }
-};
 
-let Logoname;
-if(role==="ADMIN")
-{
-  Logoname="VikkiSchool Admin"
-}
-else
-  Logoname="VikkiSchool"
+  const handleDashboardNavigation = () => {
+    if (isAuthenticated) {
+      navigate(role === "ADMIN" ? "/adminDashboard" : "/userDashboard");
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const Logoname = role === "ADMIN" ? "VikkiSchool Admin" : "VikkiSchool";
 
   return (
-<header id="site-header" className="fixed-top clean-header">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f0f0f] bg-opacity-95 backdrop-blur-md shadow-md border-b border-gray-800">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
+        {/* Left: Logo + Explore */}
+        <div className="flex items-center gap-4">
+          <Link to="/" className="text-2xl font-bold text-purple-400 hover:text-purple-300 transition">
+            🎓 {Logoname}
+          </Link>
 
-
-  <div className="container">
-    <nav className="navbar navbar-expand-lg navbar-light d-flex align-items-center">
-      {/* Logo */}
-      <Link className="navbar-brand me-3 text-white" to="/">
-        <i className="fas fa-graduation-cap me-2"></i> {Logoname}
-      </Link>
-
-      {/* Explore Button */}
-
-
-    <div
-  className="position-relative"
-  onMouseEnter={() => {
-    fetchCategories();
-    setShowCategories(true);
-  }}
-  onMouseLeave={() => setShowCategories(false)}
->
-  <button className="btn btn-outline-light me-3">Explore</button>
-
-  {showCategories && (
-    <div
-      className="position-absolute bg-white text-dark shadow p-3 rounded"
-      style={{ top: '100%', left: 0, zIndex: 1000, minWidth: '200px' }}
-    >
-      {categories.map((cat, index) => (
-        <div
-          key={index}
-          className="category-item"
-          style={{ padding: '5px 10px', cursor: 'pointer' }}
-          onClick={() => {
-            navigate(`/courses/category/${cat}`);
-            setShowCategories(false);
-          }}
-        >
-          {cat}
+          <div
+            className="relative hidden md:block"
+            onMouseEnter={() => {
+              fetchCategories();
+              setShowCategories(true);
+            }}
+            onMouseLeave={() => setShowCategories(false)}
+          >
+            <button className="text-gray-300 hover:text-purple-400 font-medium transition">
+              Explore
+            </button>
+            {showCategories && (
+              <div className="absolute left-0 top-full mt-2 w-48 bg-gray-900 text-gray-200 shadow-lg rounded-lg p-2 z-50 border border-gray-700">
+                {categories.map((cat, idx) => (
+                  <div
+                    key={idx}
+                    className="px-4 py-2 hover:bg-gray-800 hover:text-purple-300 cursor-pointer rounded-md text-sm"
+                    onClick={() => {
+                      navigate(`/courses/category/${cat}`);
+                      setShowCategories(false);
+                    }}
+                  >
+                    {cat}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      ))}
-    </div>
-  )}
-</div>
 
+        {/* Center: Search */}
+        <form
+          onSubmit={handleSearch}
+          className="flex-grow max-w-md mx-4 hidden sm:block"
+        >
+          <input
+            type="text"
+            placeholder="Search courses..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 rounded-full border border-gray-700 bg-gray-800 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </form>
 
-      {/* Search Bar */}
-      <form className="d-flex me-auto" onSubmit={handleSearch} style={{ flexGrow: 1, maxWidth: '400px' }}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search courses..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </form>
+        {/* Right: Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+          <Link to="/courses" className="hover:text-purple-400 transition">Courses</Link>
+          <Link to="/contact" className="hover:text-purple-400 transition">Contact</Link>
 
-      {/* Navigation */}
-      <div className="collapse navbar-collapse" id="navbarScroll">
-        <ul className="navbar-nav ms-auto align-items-center">
-          <li className="nav-item">
-            <Link className="nav-link text-white" to="/courses">Courses</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link text-white" to="/contact">Contact</Link>
-          </li>
-          <li className="nav-item">
-
-
-<button className="btn btn-outline-light" onClick={handleDashboardNavigation}>
-  Dashboard
-</button>
-          </li>
+          <button
+            onClick={handleDashboardNavigation}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-full transition"
+          >
+            Dashboard
+          </button>
 
           {!isAuthenticated ? (
-            <li className="nav-item">
-              <Link className="btn btn-outline-light ms-3" to="/login">
-                Login
-              </Link>
-            </li>
+            <Link
+              to="/login"
+              className="ml-2 border border-purple-600 text-purple-300 px-4 py-1.5 rounded-full hover:bg-purple-600 hover:text-white transition"
+            >
+              Login
+            </Link>
           ) : (
             <>
-              <li className="nav-item">
-                <button className="btn btn-danger ms-3" onClick={handleLogout}>
-                  Logout
-                </button>
-              </li>
-              <li className="nav-item ms-3">
-                <div className="avatar-circle text-white bg-primary fw-bold text-center" title={username}>
-                  {getInitials(username)}
-                </div>
-              </li>
+              <button
+                onClick={handleLogout}
+                className="ml-2 text-red-400 hover:text-red-500 transition"
+              >
+                Logout
+              </button>
+              <div
+                className="ml-4 w-9 h-9 flex items-center justify-center bg-gradient-to-tr from-purple-600 to-indigo-600 text-white rounded-full text-sm font-bold shadow-inner"
+                title={username}
+              >
+                {getInitials(username)}
+              </div>
             </>
           )}
-        </ul>
+        </nav>
+
+        {/* Mobile Menu Toggle Button */}
+        <div className="md:hidden text-white text-2xl cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <FaTimes /> : <FaBars />}
+        </div>
       </div>
-    </nav>
-  </div>
 
-  {/* Avatar + custom styles */}
-  <style>{`
-    .custom-header {
-      background-color: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
+      {/* Mobile Dropdown Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden px-6 pb-4 space-y-4 text-sm bg-[#0f0f0f] text-gray-300 border-t border-gray-800">
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search courses..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 rounded-full border border-gray-700 bg-gray-800 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </form>
 
-    .navbar-nav .nav-link {
-      color: white !important;
-    }
+          <Link to="/courses" className="block hover:text-purple-400" onClick={() => setIsMenuOpen(false)}>Courses</Link>
+          <Link to="/contact" className="block hover:text-purple-400" onClick={() => setIsMenuOpen(false)}>Contact</Link>
 
-    .avatar-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+          <div
+            onClick={() => {
+              fetchCategories();
+              setShowCategories(!showCategories);
+            }}
+            className="cursor-pointer hover:text-purple-400"
+          >
+            Explore ▼
+          </div>
+          {showCategories && (
+            <div className="pl-4">
+              {categories.map((cat, idx) => (
+                <div
+                  key={idx}
+                  className="py-1 cursor-pointer hover:text-purple-300"
+                  onClick={() => {
+                    navigate(`/courses/category/${cat}`);
+                    setShowCategories(false);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  {cat}
+                </div>
+              ))}
+            </div>
+          )}
 
-    .form-control {
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-  `}</style>
-</header>
+          <button
+            onClick={() => {
+              handleDashboardNavigation();
+              setIsMenuOpen(false);
+            }}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full"
+          >
+            Dashboard
+          </button>
 
+          {!isAuthenticated ? (
+            <Link
+              to="/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-purple-300 border border-purple-600 text-center px-4 py-2 rounded-full hover:bg-purple-600 hover:text-white transition"
+            >
+              Login
+            </Link>
+          ) : (
+            <>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                className="text-red-400 hover:text-red-500"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      )}
+    </header>
   );
 }
 

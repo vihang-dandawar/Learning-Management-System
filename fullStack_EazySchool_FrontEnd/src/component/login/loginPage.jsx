@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { validateCredentials } from '../../services/Userservice'; // Should return token + role
+import { validateCredentials } from '../../services/Userservice';
 
 function LoginPage({ setIsAuthenticated, setUserRole }) {
   const navigate = useNavigate();
@@ -14,30 +14,20 @@ function LoginPage({ setIsAuthenticated, setUserRole }) {
 
     try {
       const response = await validateCredentials({ email, password });
-     
-      console.log("Login response:", response.data);
-console.log("Token received:", response.data.token);
-console.log("User ID",response.data.userId);
-
 
       if (response.status === 200) {
-        const { token, role , userId} = response.data;
-       
-
+        const { token, role, userId } = response.data;
         const cleanRole = role.replace('ROLE_', '');
 
-        // ✅ Save token and auth info to sessionStorage
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('isAuthenticated', 'true');
         sessionStorage.setItem('role', cleanRole);
         sessionStorage.setItem('username', email);
-        sessionStorage.setItem('userId',userId)
+        sessionStorage.setItem('userId', userId);
 
-        // ✅ Update state
         setIsAuthenticated(true);
         setUserRole(cleanRole);
 
-        // ✅ Redirect based on role
         if (cleanRole === 'ADMIN') {
           navigate('/adminDashboard');
         } else {
@@ -47,74 +37,71 @@ console.log("User ID",response.data.userId);
     } catch (error) {
       console.error(error);
       setErrorMsg('Invalid username or password');
-       console.log("email->",email,"password->",password)
     }
   };
 
   return (
-    <>
-      {/* Banner */}
-      <section className="inner-banner py-5">
-        <div className="w3l-breadcrumb py-lg-5">
-          <div className="container pt-4 pb-sm-4">
-            <h4 className="inner-text-title pt-5">LogIn</h4>
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col justify-center items-center px-4">
+      {/* Page Title */}
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-bold mb-2">Log In</h2>
+        <p className="text-gray-300">Access your account</p>
+      </div>
+
+      {/* Form Card */}
+      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        {errorMsg && (
+          <div className="mb-4 bg-red-500 text-white p-3 rounded">
+            {errorMsg}
           </div>
-        </div>
-      </section>
+        )}
 
-      {/* Login Form */}
-      <section className="w3l-contact py-5" id="contact">
-        <div className="container py-md-5 py-4">
-          <div className="title-main text-center mx-auto mb-md-5 mb-4" style={{ maxWidth: '500px' }}>
-            <h3 className="title-style">LogIn</h3>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+            autoComplete="email"
+          />
+
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="w-full px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+            autoComplete="new-password"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 transition-colors duration-300 text-white font-semibold py-2 rounded"
+          >
+            Log In
+          </button>
+
+          {/* New User + Forget Password */}
+          <div className="flex justify-between items-center text-sm text-gray-300">
+            <a href="/register" className="hover:underline">
+              New User?
+            </a>
+            <button
+              type="button"
+              className="text-blue-400 hover:text-blue-500"
+              onClick={() => navigate('/forget-password')}
+            >
+              Forget Password?
+            </button>
           </div>
-          <div className="row login-block justify-content-center">
-            <div className="col-md-6 login-center">
-              <form onSubmit={handleSubmit} className="signin-form">
-                <div className="col-md-8 mx-auto input-grids">
-                  {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
-
-                  <input
-  type="email"
-  name="email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  placeholder="Email"
-  className="form-control mb-3"
-  required
-  autoComplete="email"
-/>
-                  <input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    className="form-control mb-3"
-                    required
-                    autoComplete="new-password"
-                  />
-                </div>
-               <div className="col-md-8 mx-auto text-start">
-  <button type="submit" className="btn btn-primary mb-2">Log In</button>
- <a className="new-user float-end mt-2" href="/register">New User?</a>
-  {/* Forget Password Button Below */}
-  <div className="mt-2">
-    <button type="button"
-     className="btn btn-secondary"
-      onClick={() => navigate('/forget-password')}
-      >Forget Password</button>
-  </div>
-
- 
-</div>
-
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+        </form>
+      </div>
+    </div>
   );
 }
 

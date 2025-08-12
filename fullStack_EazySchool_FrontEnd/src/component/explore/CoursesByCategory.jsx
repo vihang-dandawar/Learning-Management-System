@@ -12,7 +12,7 @@ const CoursesByCategory = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`http://localhost:1011/courses/category/${category}`);
+        const response = await axios.get(`http://localhost:8080/courses/category/${category}`);
         setCourses(response.data);
       } catch (err) {
         console.error("Error fetching courses:");

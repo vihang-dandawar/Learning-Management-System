@@ -30,12 +30,15 @@ function LoginPage({ setIsAuthenticated, setUserRole }) {
 
         if (cleanRole === 'ADMIN') {
           navigate('/adminDashboard');
-        } else {
-          navigate('/userDashboard');
+        } else if(cleanRole==='INSTRUCTOR') {
+          navigate('/instructor-dashboard');
+        } else
+        {
+          navigate('/userDashboard')
         }
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       setErrorMsg('Invalid username or password');
     }
   };

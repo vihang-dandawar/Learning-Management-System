@@ -8,13 +8,13 @@ function Homepage() {
   useEffect(() => {
     latestCourses()
       .then((response) => setCourses(response.data))
-      .catch((error) => console.error('Error fetching latest courses:', error));
+      .catch((error) => console.error('Error fetching latest courses:'));
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCourseIndex((prev) => (prev + 1) % courses.length);
-    }, 5000);
+    }, 3500);
     return () => clearInterval(interval);
   }, [courses]);
 
@@ -52,7 +52,7 @@ function Homepage() {
             </p>
             <p className="text-sm text-gray-300">{courses[courseIndex].description}</p>
             <p className="text-sm text-gray-400">
-              <strong>Instructor:</strong> {courses[courseIndex].instructor}
+              <strong>Instructor:</strong> {courses[courseIndex].instructorName}
             </p>
             <p className="text-lg font-semibold text-green-400">
               ₹{courses[courseIndex].price}

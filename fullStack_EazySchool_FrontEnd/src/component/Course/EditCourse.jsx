@@ -25,7 +25,7 @@ function EditCourse() {
     try {
       await deleteCourse(id);
       alert('🗑️ Course deleted successfully');
-      navigate('/admin-getAllcourses');
+      navigate('/instructor-dashboard');
     } catch (err) {
       alert(err);
     }
@@ -60,7 +60,7 @@ function EditCourse() {
         <input
           className="w-full p-3 mb-4 rounded-md bg-gray-800 border border-gray-600 text-white placeholder-gray-400"
           placeholder="Instructor"
-          value={course.instructor || ''}
+          value={course.instructorName || ''}
           onChange={(e) => setCourse({ ...course, instructor: e.target.value })}
         />
 

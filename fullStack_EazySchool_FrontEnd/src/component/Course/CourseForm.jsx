@@ -8,7 +8,7 @@ const CourseForm = () => {
   const [course, setCourse] = useState({
     title: '',
     description: '',
-    instructor: '',
+    instructorName: '',
     price: '',
     category: '',
     imageUrl: ''
@@ -23,9 +23,9 @@ const CourseForm = () => {
     try {
       const res = await CreateCourse(course);
       alert('✅ Course created successfully!');
-      console.log(res.data);
+      // console.log(res.data);
     } catch (err) {
-      console.error('❌ Error creating course', err);
+      console.error('❌ Error creating course');
     }
   };
 
@@ -67,15 +67,15 @@ const CourseForm = () => {
             />
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Instructor</label>
             <input
-              name="instructor"
+              name="instructorName"
               required
               onChange={handleChange}
               className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
+          </div> */}
 
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">Price ($)</label>

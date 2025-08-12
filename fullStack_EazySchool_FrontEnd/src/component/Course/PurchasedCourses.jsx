@@ -16,7 +16,7 @@ function PurchasedCourses() {
         setCourses(data);
         setLoading(false);
       } catch (err) {
-        console.error('Failed to fetch purchased courses:', err);
+        console.error('Failed to fetch purchased courses:');
         setError('Unable to load your courses.');
         setLoading(false);
       }
@@ -49,7 +49,7 @@ function PurchasedCourses() {
                 {course.description.substring(0, 80)}...
               </p>
               <p className="text-sm mb-1">
-                <span className="text-gray-400">Instructor:</span> {course.instructor}
+                <span className="text-gray-400">Instructor:</span> {course.instructorName}
               </p>
               <p className="text-sm mb-1">
                 <span className="text-gray-400">Category:</span> {course.category}

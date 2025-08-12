@@ -15,7 +15,7 @@ const CoursesByCategory = () => {
         const response = await axios.get(`http://localhost:1011/courses/category/${category}`);
         setCourses(response.data);
       } catch (err) {
-        console.error("Error fetching courses:", err);
+        console.error("Error fetching courses:");
         setError("Failed to fetch courses.");
       } finally {
         setLoading(false);

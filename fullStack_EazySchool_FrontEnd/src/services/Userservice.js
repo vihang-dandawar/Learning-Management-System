@@ -156,6 +156,30 @@ export const searchCourse = (keyword) => {
   return axios.get(`http://localhost:1011/courses/search/${encodeURIComponent(keyword)}`);
 }
 
+export const getEnrolledStudentsByCourseId=(courseId)=>{
+  return api.get(`http://localhost:1011/courses/${courseId}/students`)
+}
+
+export const InstructorApplicationForm = (form) => {
+  return api.post(`/api/instructor-applications/apply`, form);
+};
+
+export const InstructorApprovalPending = () => {
+  return api.get("/api/instructor-applications/pending");
+};
+
+export const InstructorApprovalStatusApprove = (id) => {
+  return api.put(`/api/instructor-applications/${id}/approve`);
+};
+
+export const InstructorApprovalStatusReject = (id) => {
+  return api.put(`/api/instructor-applications/${id}/reject`);
+};
+
+
+export const GetInstructorCourses=()=>{
+  return api.get("/instructor/courses")
+}
 
 
 

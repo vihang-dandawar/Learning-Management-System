@@ -9,7 +9,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('token');
-      console.log('🔐 Adding token to headers:', token); // ✅ Debug log
+      // console.log('🔐 Adding token to headers:', token); // ✅ Debug log
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
       

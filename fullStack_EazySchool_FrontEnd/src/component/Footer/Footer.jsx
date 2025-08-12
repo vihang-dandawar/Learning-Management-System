@@ -1,7 +1,9 @@
 // FooterComponent.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Footer() {
+  const navigate=useNavigate();
   return (
     <footer className="bg-[#0f0f0f] bg-opacity-95 text-gray-200 py-12 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
@@ -23,7 +25,7 @@ function Footer() {
           <ul className="space-y-3 text-sm">
             <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
             <li><a href="#" className="hover:text-white transition-colors">Courses</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Become a Teacher</a></li>
+           <li><a  className="hover:text-white transition-colors"> <button onClick={()=>{navigate("/become-instructor")}}>Become a Teacher</button></a></li>
             <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
             <li><a href="#" className="hover:text-white transition-colors">Career</a></li>
           </ul>

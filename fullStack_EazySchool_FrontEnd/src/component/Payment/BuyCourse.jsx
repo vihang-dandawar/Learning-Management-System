@@ -14,7 +14,7 @@ function BuyCoursePage() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Failed to load course', err);
+        console.error('Failed to load course');
         setLoading(false);
       });
   }, [courseId]);
@@ -61,7 +61,7 @@ function BuyCoursePage() {
             });
             alert('✅ Purchase recorded successfully!');
           } catch (error) {
-            console.error('Error recording purchase:', error);
+            console.error('Error recording purchase:');
             alert('Payment succeeded but purchase not saved!');
           }
         },
@@ -81,7 +81,7 @@ function BuyCoursePage() {
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (err) {
-      console.error('❌ Payment error:', err);
+      console.error('❌ Payment error:');
       alert('❌ Failed to start payment');
     }
   };
@@ -98,7 +98,7 @@ function BuyCoursePage() {
     <div className="min-h-screen bg-gray-900 text-white px-4 py-12 flex items-center justify-center">
       <div className="max-w-lg w-full bg-gray-800 rounded-lg shadow-xl p-8 text-center">
         <h2 className="text-3xl font-semibold mb-4">{course.title}</h2>
-        <p className="text-sm text-gray-400 mb-1">Instructor: {course.instructor}</p>
+        <p className="text-sm text-gray-400 mb-1">Instructor: {course.instructorName}</p>
         <p className="text-lg text-gray-100 font-medium mb-6">Price: ₹{course.price}</p>
         <button
           onClick={handlePayment}

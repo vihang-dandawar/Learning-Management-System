@@ -55,7 +55,7 @@ function SearchCourses() {
               <div className="p-4">
                 <h5 className="text-lg font-semibold mb-2">{course.title}</h5>
                 <p className="text-gray-300 text-sm mb-2 line-clamp-2">{course.description}</p>
-                <p className="text-sm text-gray-400 mb-1"><strong>Instructor:</strong> {course.instructor}</p>
+                <p className="text-sm text-gray-400 mb-1"><strong>Instructor:</strong> {course.instructorName}</p>
                 <p className="text-green-400 font-semibold text-sm"><strong>Price:</strong> ₹{course.price}</p>
               </div>
               <div className="px-4 pb-4 text-center">

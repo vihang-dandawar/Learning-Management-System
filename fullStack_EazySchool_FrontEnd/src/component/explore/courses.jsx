@@ -14,7 +14,7 @@ function Courses() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Failed to load courses', err);
+        console.error('Failed to load courses');
         setLoading(false);
       });
   }, []);
@@ -51,7 +51,7 @@ function Courses() {
               <h5 className="text-lg font-semibold mb-1">{course.title}</h5>
               <p className="text-gray-300 text-sm mb-2 line-clamp-2">{course.description}</p>
               <p className="text-sm text-gray-400 mb-1">
-                <span className="font-medium text-gray-300">Instructor:</span> {course.instructor}
+                <span className="font-medium text-gray-300">Instructor:</span> {course.instructorName}
               </p>
               <p className="text-sm text-gray-400 mb-3">
                 <span className="font-medium text-gray-300">Category:</span> {course.category}

@@ -15,7 +15,7 @@ function Header({ isAuthenticated, role, username = '', onLogout }) {
       const response = await getCategoriesOfCourses();
       setCategories(response.data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error("Error fetching categories:");
     }
   };
 
@@ -38,13 +38,19 @@ function Header({ isAuthenticated, role, username = '', onLogout }) {
     navigate(`/courses/search/${searchTerm}`);
   };
 
-  const handleDashboardNavigation = () => {
-    if (isAuthenticated) {
-      navigate(role === "ADMIN" ? "/adminDashboard" : "/userDashboard");
+const handleDashboardNavigation = () => {
+  if (isAuthenticated) {
+    if (role === "ADMIN") {
+      navigate("/adminDashboard");
+    } else if (role === "INSTRUCTOR") {
+      navigate("/instructor-dashboard");
     } else {
-      navigate("/login");
+      navigate("/userDashboard");
     }
-  };
+  } else {
+    navigate("/login");
+  }
+};
 
   const Logoname = role === "ADMIN" ? "VikkiSchool Admin" : "VikkiSchool";
 
@@ -106,6 +112,15 @@ function Header({ isAuthenticated, role, username = '', onLogout }) {
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
           <Link to="/courses" className="hover:text-purple-400 transition">Courses</Link>
           <Link to="/contact" className="hover:text-purple-400 transition">Contact</Link>
+
+          {isAuthenticated && role === "USER" && (
+            <button
+              onClick={() => navigate("/become-instructor")}
+              className="border border-purple-600 text-purple-300 px-4 py-1.5 rounded-full hover:bg-purple-600 hover:text-white transition"
+            >
+              Become Instructor
+            </button>
+          )}
 
           <button
             onClick={handleDashboardNavigation}
@@ -186,6 +201,18 @@ function Header({ isAuthenticated, role, username = '', onLogout }) {
                 </div>
               ))}
             </div>
+          )}
+
+          {isAuthenticated && role === "USER" && (
+            <button
+              onClick={() => {
+                navigate("/become-instructor");
+                setIsMenuOpen(false);
+              }}
+              className="w-full border border-purple-600 text-purple-300 px-4 py-2 rounded-full hover:bg-purple-600 hover:text-white transition"
+            >
+              Become Instructor
+            </button>
           )}
 
           <button

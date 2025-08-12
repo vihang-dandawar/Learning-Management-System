@@ -17,7 +17,7 @@ function CourseList() {
       setCourses(response.data);
     } catch (err) {
       setError('❌ Failed to load courses. Please try again.');
-      console.error(err);
+      // console.error(err);
     }
   };
 
@@ -45,7 +45,7 @@ function CourseList() {
             <div className="p-5 flex flex-col flex-grow">
               <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
               <p className="text-gray-300 text-sm line-clamp-2 mb-3">{course.description}</p>
-              <p className="text-sm mb-1"><span className="font-semibold">Instructor:</span> {course.instructor}</p>
+              <p className="text-sm mb-1"><span className="font-semibold">Instructor:</span> {course.instructorName}</p>
               <p className="text-sm mb-3"><span className="font-semibold">Category:</span> {course.category}</p>
               <div className="mt-auto flex justify-between items-center">
                 <span className="text-green-400 font-semibold text-lg">₹{course.price}</span>

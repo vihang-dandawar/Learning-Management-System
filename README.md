@@ -16,6 +16,7 @@ A full-stack Learning Management System (LMS) built using **Spring Boot**, **Rea
 - OTP-based password reset
 - Razorpay dummy payment integration
 - MVC Architecture
+-Search courses by name & category
 
 ### Frontend
 - React.js (Hooks + React Router)
@@ -33,20 +34,28 @@ A full-stack Learning Management System (LMS) built using **Spring Boot**, **Rea
 
 ## ✨ Features
 
+
 ### 🔐 Authentication & Authorization
 - JWT-based login
 - Role-based access control (Admin/User)
 - Secure REST APIs
 - OTP-based password reset system
+- Secure REST APIs
+
 
 ### 🎓 Course Management
-- Admin:
+- **Admin**:
   - Create, update, delete courses
   - Add YouTube video links
-- User:
-  - View course list
-  - View detailed course content **only after purchase**
-  - Access restricted to purchased courses
+  - View enrolled students for any course
+- **Instructor**:
+  - Create and manage their own courses
+  - View enrolled students for their courses
+- **User**:
+  - Browse available courses
+  - View course details
+  - Purchase courses (Razorpay Test Mode)
+  - View purchased courses only
 
 ### 💳 Razorpay Integration
 - Dummy Razorpay payment gateway for purchasing courses
@@ -143,5 +152,5 @@ Real email OTP delivery (SMTP / SendGrid)
 Upload video instead of just YouTube link
 Course progress tracking
 Certificate generation (PDF)
-Instructor dashboard
+Instructor earnings analytics
 

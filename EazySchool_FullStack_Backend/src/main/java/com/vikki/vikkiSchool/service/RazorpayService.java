@@ -26,7 +26,8 @@ public class RazorpayService {
         orderRequest.put("currency", currency);
         orderRequest.put("receipt", receiptId); // ❗ Use key "receipt", not "receiptId"
 
-        Order order = razorpayClient.orders.create(orderRequest); // ✅ Razorpay API call
+        Order order = razorpayClient.orders.create(orderRequest);
+        // ✅ Razorpay API call
 
         log.info("Order Created: {}", order.toString());
         return order.toString(); // You can also return `order.get("id")` and others in a Map

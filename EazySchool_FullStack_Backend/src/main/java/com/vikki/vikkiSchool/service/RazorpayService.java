@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+
 @Service
 public class RazorpayService {
     @Value("${razorpay.api.key}")
@@ -29,7 +29,7 @@ public class RazorpayService {
         Order order = razorpayClient.orders.create(orderRequest);
         // ✅ Razorpay API call
 
-        log.info("Order Created: {}", order.toString());
+//        log.info("Order Created: {}", order.toString());
         return order.toString(); // You can also return `order.get("id")` and others in a Map
     }
 

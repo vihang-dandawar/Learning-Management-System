@@ -16,7 +16,7 @@ A full-stack Learning Management System (LMS) built using **Spring Boot**, **Rea
 - OTP-based password reset
 - Razorpay dummy payment integration
 - MVC Architecture
--Search courses by name & category
+- **Search courses by name & category**
 
 ### Frontend
 - React.js (Hooks + React Router)

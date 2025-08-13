@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 
-
+@RequestMapping("/api/instructor-applications")
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173","https://vikkischool-lms.vercel.app"})
 

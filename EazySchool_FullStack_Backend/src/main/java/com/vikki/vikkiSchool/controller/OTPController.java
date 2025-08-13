@@ -13,7 +13,8 @@ import java.util.Map;
 
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:5173","https://vikkischool-lms.vercel.app"})
+
 public class OTPController {
 @Autowired
     EmailService emailService;

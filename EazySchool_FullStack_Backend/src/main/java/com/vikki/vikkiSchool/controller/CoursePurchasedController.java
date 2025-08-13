@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:5173","https://vikkischool-lms.vercel.app"})
+
 public class CoursePurchasedController {
 @Autowired
     coursePurchaseService coursePurchaseService;

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:5173","https://vikkischool-lms.vercel.app"})
+
 @RestController
 public class videoController {
     @Autowired

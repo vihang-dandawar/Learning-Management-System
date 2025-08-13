@@ -158,85 +158,98 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
       </button>
 
       {/* Course Header */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 mb-8">
-        <div className="w-full rounded-lg overflow-hidden">
-          <img
-            src={course.imageUrl}
-            alt={course.title}
-            className="w-full h-auto object-cover sm:object-contain rounded-lg"
-            onError={(e) => {
-              e.target.src = '/api/placeholder/400/200';
-            }}
-          />
-        </div>
-        <div className="flex flex-col justify-center px-2 sm:px-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 break-words">
-            {course.title}
-          </h2>
-          <p className="text-gray-400 mb-3 text-sm sm:text-base">{course.description}</p>
-          <p className="text-sm mb-1">
-            <span className="font-semibold text-white">🎓 Instructor:</span>{' '}
-            {course.instructorName}
-          </p>
-          <p className="text-sm mb-1">
-            <span className="font-semibold text-white">📚 Category:</span>{' '}
-            {course.category}
-          </p>
-          <p className="text-sm mb-4">
-            <span className="font-semibold text-white">💰 Price:</span> ₹{course.price}
-          </p>
+     {/* Course Header */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+  
+  {/* Image */}
+  <div className="w-full h-full flex items-center justify-center bg-gray-900">
+    <div className="relative w-full pt-[56.25%] md:pt-[75%]">
+      <img
+        src={course.imageUrl}
+        alt={course.title}
+        className="absolute top-0 left-0 w-full h-full object-cover rounded-none md:rounded-l-xl"
+        onError={(e) => {
+          e.target.src = '/api/placeholder/400/200';
+        }}
+      />
+    </div>
+  </div>
 
-          {shouldShowBuyButton() && (
-            <button
-              className="w-full bg-green-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-700 transition text-sm sm:text-base"
-              onClick={handleBuyCourse}
-            >
-              Buy Now - ₹{course.price}
-            </button>
-          )}
+  {/* Text */}
+  <div className="flex flex-col justify-center px-4 sm:px-6 py-4">
+    <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 break-words">
+      {course.title}
+    </h2>
+    <p className="text-gray-400 mb-3 text-sm sm:text-base">{course.description}</p>
+    <p className="text-sm mb-1">
+      <span className="font-semibold text-white">🎓 Instructor:</span>{' '}
+      {course.instructorName}
+    </p>
+    <p className="text-sm mb-1">
+      <span className="font-semibold text-white">📚 Category:</span>{' '}
+      {course.category}
+    </p>
+    <p className="text-sm mb-4">
+      <span className="font-semibold text-white">💰 Price:</span> ₹{course.price}
+    </p>
 
-          {isAuthenticated && !isAdmin && !isCourseOwnerCheck() && isPurchased && (
-            <div className="bg-green-800 text-green-200 px-4 py-2 rounded text-sm mt-2">
-              ✅ You have purchased this course
-            </div>
-          )}
+    {/* Buy Button */}
+    {shouldShowBuyButton() && (
+      <button
+        className="w-full bg-green-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-700 transition text-sm sm:text-base"
+        onClick={handleBuyCourse}
+      >
+        Buy Now - ₹{course.price}
+      </button>
+    )}
 
-          {isCourseOwnerCheck() && (
-            <div className="bg-blue-800 text-blue-200 px-4 py-2 rounded text-sm mt-2">
-              ✅ You are the instructor of this course
-            </div>
-          )}
-
-          {shouldShowInstructorActions() && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              <button
-                className="bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition text-sm"
-                onClick={() => navigate(`/courses/${course.id}/edit`)}
-              >
-                ✏️ Edit Course
-              </button>
-              <button
-                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
-                onClick={() => navigate(`/courses/${course.id}/add-video`)}
-              >
-                ➕ Add Videos
-              </button>
-              <button
-                className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700 transition text-sm"
-                onClick={() => navigate(`/courses/${course.id}/students`)}
-              >
-                👥 Enrolled Students
-              </button>
-            </div>
-          )}
-
-          {isAdminButNotOwner() && (
-            <div className="mt-3 bg-red-800 text-red-200 px-3 py-1 rounded text-sm text-center">
-              🔧 Admin View - Read Only
-            </div>
-          )}
-        </div>
+    {/* Purchased Message */}
+    {isAuthenticated && !isAdmin && !isCourseOwnerCheck() && isPurchased && (
+      <div className="bg-green-800 text-green-200 px-4 py-2 rounded text-sm mt-2">
+        ✅ You have purchased this course
       </div>
+    )}
+
+    {/* Owner Message */}
+    {isCourseOwnerCheck() && (
+      <div className="bg-blue-800 text-blue-200 px-4 py-2 rounded text-sm mt-2">
+        ✅ You are the instructor of this course
+      </div>
+    )}
+
+    {/* Instructor Actions */}
+    {shouldShowInstructorActions() && (
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          className="bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition text-sm"
+          onClick={() => navigate(`/courses/${course.id}/edit`)}
+        >
+          ✏️ Edit Course
+        </button>
+        <button
+          className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
+          onClick={() => navigate(`/courses/${course.id}/add-video`)}
+        >
+          ➕ Add Videos
+        </button>
+        <button
+          className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700 transition text-sm"
+          onClick={() => navigate(`/courses/${course.id}/students`)}
+        >
+          👥 Enrolled Students
+        </button>
+      </div>
+    )}
+
+    {/* Admin Badge */}
+    {isAdminButNotOwner() && (
+      <div className="mt-3 bg-red-800 text-red-200 px-3 py-1 rounded text-sm text-center">
+        🔧 Admin View - Read Only
+      </div>
+    )}
+  </div>
+</div>
+
 
       {/* Videos Section */}
       <h4 className="text-xl sm:text-2xl font-semibold mb-5">📺 Course Videos</h4>

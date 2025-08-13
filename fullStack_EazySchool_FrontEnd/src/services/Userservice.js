@@ -2,6 +2,7 @@
 
 import api from './axiosConfig';
 import axios from 'axios';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
 // ✅ Username-related (GET)
 export const GetUsername = () => {
@@ -91,11 +92,11 @@ return api.get(`/videos/getLink/${id}`)
 
 export const sendOTP=(email)=>
 {
-return axios.post("http://localhost:8080/auth/send-otp",{email})
+return axios.post(API_BASE_URL+"/auth/send-otp",{email})
 }
 
 export const resetPasswordWithOTP=({email,otp,password})=>{
-return axios.post("http://localhost:8080/auth/reset-password",{email,otp,password});
+return axios.post(API_BASE_URL+"/auth/reset-password",{email,otp,password});
 }
 
 
@@ -142,22 +143,22 @@ export const CoursePurchase=(CoursePurchaseRequest)=>
 
 export const latestCourses=()=>
 {
-   return axios.get("http://localhost:8080/courses/latest");
+   return axios.get(API_BASE_URL+"/courses/latest");
 }
 
 
 
 export const getCategoriesOfCourses=()=>
 {
-  return axios.get("http://localhost:8080/courses/getCategory")
+  return axios.get(API_BASE_URL+"/courses/getCategory")
 }
 
 export const searchCourse = (keyword) => {
-  return axios.get(`http://localhost:8080/courses/search/${encodeURIComponent(keyword)}`);
+  return axios.get(API_BASE_URL+`/courses/search/${encodeURIComponent(keyword)}`);
 }
 
 export const getEnrolledStudentsByCourseId=(courseId)=>{
-  return api.get(`http://localhost:8080/courses/${courseId}/students`)
+  return api.get(`/courses/${courseId}/students`)
 }
 
 export const InstructorApplicationForm = (form) => {

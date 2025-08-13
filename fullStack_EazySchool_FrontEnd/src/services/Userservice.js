@@ -25,12 +25,12 @@ export const changemsgStatus=(id)=>
 
 // ✅ Login: returns JWT and role
 export const validateCredentials = ({ email, password }) => {
-  return api.post('/loginUser', { email, password });
+  return axios.post('/loginUser', { email, password });
 };
 
 // ✅ Register new user
 export const RegisterNewUser = (userData) => {
-  return api.post('/register', userData);
+  return axios.post('/register', userData);
 };
 
 // ✅ Get all messages (Admin use)

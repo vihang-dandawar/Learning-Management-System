@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getCategory } from '../../services/Userservice';
 
 const CoursesByCategory = () => {
   const { category } = useParams();
@@ -12,7 +13,7 @@ const CoursesByCategory = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/courses/category/${category}`);
+        const response = await getCategory(category)
         setCourses(response.data);
       } catch (err) {
         console.error("Error fetching courses:");

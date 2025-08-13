@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = 'd1-production-2cfa.up.railway.app' || 'http://localhost:8080';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

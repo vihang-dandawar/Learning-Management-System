@@ -2,7 +2,7 @@
 
 import api from './axiosConfig';
 import axios from 'axios';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = 'd1-production-2cfa.up.railway.app' || 'http://localhost:8080';
 
 // ✅ Username-related (GET)
 export const GetUsername = () => {
@@ -181,6 +181,13 @@ export const InstructorApprovalStatusReject = (id) => {
 export const GetInstructorCourses=()=>{
   return api.get("/instructor/courses")
 }
+
+
+export const getCategory=(category)=>
+{
+return axios.get(API_BASE_URL+`/courses/category/${category}`)
+}
+
 
 
 

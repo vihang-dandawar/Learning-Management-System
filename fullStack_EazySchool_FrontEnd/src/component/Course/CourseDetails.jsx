@@ -14,36 +14,27 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
   const [loadingPurchaseStatus, setLoadingPurchaseStatus] = useState(true);
   const [loadingCourse, setLoadingCourse] = useState(true);
 
-  // Get userId from sessionStorage and update UserId prop
   const userId = sessionStorage.getItem('userId');
   const currentUserId = userId || UserId;
-  
+
   const { courseId } = useParams();
   const navigate = useNavigate();
 
-  // Normalize roles to handle case sensitivity and null values
   const normalizedRole = String(userRole || '').toLowerCase();
   const isInstructor = normalizedRole === 'instructor';
   const isAdmin = normalizedRole === 'admin';
-  
-  // console.log('Current userId:', currentUserId);
-  // console.log('User role:', normalizedRole);
 
   useEffect(() => {
     fetchCourseDetails();
   }, [courseId]);
 
-  // Separate useEffect for purchase status check that depends on course data
   useEffect(() => {
     if (course && course.instructor) {
       const isCourseOwner = isCourseOwnerCheck();
-      
       if (isAuthenticated && !isAdmin && !isCourseOwner) {
-        // Only check purchase status for regular users (not admin, not course owner)
         checkPurchaseStatus();
       } else {
-        // Admin, course owner, or unauthenticated user - no need to check purchase
-        setIsPurchased(isCourseOwner); // true if course owner, false otherwise
+        setIsPurchased(isCourseOwner);
         setLoadingPurchaseStatus(false);
       }
     } else {
@@ -92,7 +83,7 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
       setIsPurchased(!!data);
     } catch (err) {
       setIsPurchased(false);
-      console.error('Error checking purchase status:', );
+      console.error('Error checking purchase status:');
     } finally {
       setLoadingPurchaseStatus(false);
     }
@@ -110,43 +101,29 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
 
   const handleBuyCourse = () => navigate(`/buy/${courseId}`);
 
-  // Helper functions for better readability
   const isCourseOwnerCheck = () => {
-    // Only instructors can own courses, even if they're also admin
-    // Admin role alone doesn't make them course owner
-    // Add null checks to prevent errors
-    return course && 
-           course.instructor &&
-           course.instructor.id &&
-           (isInstructor || isAdmin) && 
-           String(course.instructor.id) === String(currentUserId);
+    return (
+      course &&
+      course.instructor &&
+      course.instructor.id &&
+      (isInstructor || isAdmin) &&
+      String(course.instructor.id) === String(currentUserId)
+    );
   };
 
   const canViewVideos = () => {
-    // Can view if: admin (full access), course owner, or purchased student
     return isAdmin || isCourseOwnerCheck() || (isAuthenticated && isPurchased);
   };
 
   const shouldShowBuyButton = () => {
-    // Show buy button only for authenticated regular users (students) who:
-    // - Are not admins
-    // - Are not the course owner
-    // - Haven't purchased the course yet
     const isCourseOwner = isCourseOwnerCheck();
-    
-    return isAuthenticated && 
-           !isAdmin && 
-           !isCourseOwner && 
-           !isPurchased;
+    return isAuthenticated && !isAdmin && !isCourseOwner && !isPurchased;
   };
 
   const shouldShowInstructorActions = () => {
-    // Show instructor actions only if the user is the actual course owner
-    // This means they must be the instructor who created this course
     return isCourseOwnerCheck();
   };
 
-  // Admin can see everything but shouldn't see instructor actions for courses they didn't create
   const isAdminButNotOwner = () => {
     return isAdmin && !isCourseOwnerCheck();
   };
@@ -172,31 +149,31 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-200 px-4 py-8">
+    <div className="min-h-screen bg-gray-900 text-gray-200 px-3 sm:px-4 py-6">
       <button
-        className="mb-6 text-sm border border-gray-500 px-4 py-2 rounded hover:bg-gray-700 transition"
+        className="mb-6 text-sm border border-gray-500 px-3 sm:px-4 py-2 rounded hover:bg-gray-700 transition"
         onClick={() => navigate(-1)}
       >
         ← Back to Courses
       </button>
 
       {/* Course Header */}
-      <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-lg p-4 mb-8">
-        <div className="max-h-48 overflow-hidden rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 mb-8">
+        <div className="w-full rounded-lg overflow-hidden">
           <img
             src={course.imageUrl}
             alt={course.title}
-            className="w-full h-full object-cover"
+            className="w-full h-auto object-cover sm:object-contain rounded-lg"
             onError={(e) => {
-              e.target.src = '/api/placeholder/400/200'; // Fallback image
+              e.target.src = '/api/placeholder/400/200';
             }}
           />
         </div>
-        <div className="flex flex-col justify-center px-4">
-          <h2 className="text-2xl font-bold text-white mb-2 truncate">
+        <div className="flex flex-col justify-center px-2 sm:px-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 break-words">
             {course.title}
           </h2>
-          <p className="text-gray-400 mb-3 line-clamp-3">{course.description}</p>
+          <p className="text-gray-400 mb-3 text-sm sm:text-base">{course.description}</p>
           <p className="text-sm mb-1">
             <span className="font-semibold text-white">🎓 Instructor:</span>{' '}
             {course.instructorName}
@@ -206,35 +183,30 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
             {course.category}
           </p>
           <p className="text-sm mb-4">
-            <span className="font-semibold text-white">💰 Price:</span> ₹
-            {course.price}
+            <span className="font-semibold text-white">💰 Price:</span> ₹{course.price}
           </p>
 
-          {/* Buy Button - Only for authenticated students who haven't purchased */}
           {shouldShowBuyButton() && (
             <button
-              className="w-full max-w-xs bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+              className="w-full bg-green-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-700 transition text-sm sm:text-base"
               onClick={handleBuyCourse}
             >
               Buy Now - ₹{course.price}
             </button>
           )}
 
-          {/* Already Purchased Message */}
           {isAuthenticated && !isAdmin && !isCourseOwnerCheck() && isPurchased && (
-            <div className="bg-green-800 text-green-200 px-4 py-2 rounded text-sm">
+            <div className="bg-green-800 text-green-200 px-4 py-2 rounded text-sm mt-2">
               ✅ You have purchased this course
             </div>
           )}
 
-          {/* Course Owner Message */}
           {isCourseOwnerCheck() && (
-            <div className="bg-blue-800 text-blue-200 px-4 py-2 rounded text-sm">
+            <div className="bg-blue-800 text-blue-200 px-4 py-2 rounded text-sm mt-2">
               ✅ You are the instructor of this course
             </div>
           )}
 
-          {/* Instructor Actions - Only for course's own instructor */}
           {shouldShowInstructorActions() && (
             <div className="mt-3 flex flex-wrap gap-2">
               <button
@@ -258,7 +230,6 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
             </div>
           )}
 
-          {/* Admin Badge - Only for admins who are not the course owner */}
           {isAdminButNotOwner() && (
             <div className="mt-3 bg-red-800 text-red-200 px-3 py-1 rounded text-sm text-center">
               🔧 Admin View - Read Only
@@ -268,15 +239,15 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
       </div>
 
       {/* Videos Section */}
-      <h4 className="text-2xl font-semibold mb-5">📺 Course Videos</h4>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <h4 className="text-xl sm:text-2xl font-semibold mb-5">📺 Course Videos</h4>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {course.videos?.length ? (
           course.videos.map((video, idx) => (
             <div
               key={video.id}
               className="bg-gray-800 rounded-lg shadow p-4 flex flex-col justify-between h-full"
             >
-              <div className="aspect-w-16 aspect-h-9 mb-4">
+              <div className="relative w-full pt-[56.25%] mb-4">
                 {canViewVideos() ? (
                   videoUrls[video.id] ? (
                     <iframe
@@ -291,16 +262,16 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                      className="rounded w-full h-full"
+                      className="absolute top-0 left-0 w-full h-full rounded"
                     />
                   ) : (
-                    <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded">
+                    <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded absolute top-0 left-0 w-full">
                       <p className="text-sm">⏳ Loading video...</p>
                     </div>
                   )
                 ) : (
-                  <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded">
-                    <p className="text-sm text-center">
+                  <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded absolute top-0 left-0 w-full">
+                    <p className="text-sm text-center px-2">
                       🔒 {isAuthenticated ? 'Purchase this course to unlock videos' : 'Login and purchase to view videos'}
                     </p>
                   </div>
@@ -320,7 +291,6 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
                   )}
                 </small>
 
-                {/* Edit/Delete - Only for the actual course instructor */}
                 {shouldShowInstructorActions() && (
                   <div className="mt-auto flex gap-2">
                     <button

@@ -2,7 +2,7 @@
 
 import api from './axiosConfig';
 import axios from 'axios';
-const API_BASE_URL = 'https://d1-production-2cfa.up.railway.app' || 'http://localhost:8080';
+const API_BASE_URL = 'http://localhost:8080';//'https://d1-production-2cfa.up.railway.app' ||
 
 // ✅ Username-related (GET)
 export const GetUsername = () => {

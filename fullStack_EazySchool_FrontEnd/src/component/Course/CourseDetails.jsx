@@ -158,115 +158,99 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
       </button>
 
       {/* Course Header */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-        {/* Image */}
-        <div className="w-full h-64 md:h-auto flex items-center justify-center bg-gray-900">
-          <div className="relative w-full h-full">
-            <img
-              src={course.imageUrl}
-              alt={course.title}
-              className="w-full h-full object-cover rounded-none md:rounded-l-xl"
-              onError={(e) => {
-                e.target.src = '/api/placeholder/400/200';
-              }}
-            />
-          </div>
-        </div>
+   <div className="flex flex-col md:flex-row w-full max-w-full mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+  {/* Image */}
+  <div className="w-full md:w-1/2 relative" style={{ paddingTop: '125%' }}>
+    <img
+      src={course.imageUrl}
+      alt={course.title}
+      className="absolute top-0 left-0 w-full h-full object-cover"
+      onError={(e) => { e.target.src = '/api/placeholder/400/200'; }}
+    />
+  </div>
 
-        {/* Text */}
-        <div className="flex flex-col justify-center px-4 sm:px-6 py-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 break-words">
-            {course.title}
-          </h2>
-          <p className="text-gray-400 mb-3 text-sm sm:text-base">{course.description}</p>
-          <p className="text-sm mb-1">
-            <span className="font-semibold text-white">🎓 Instructor:</span>{' '}
-            {course.instructorName}
-          </p>
-          <p className="text-sm mb-1">
-            <span className="font-semibold text-white">📚 Category:</span>{' '}
-            {course.category}
-          </p>
-          <p className="text-sm mb-4">
-            <span className="font-semibold text-white">💰 Price:</span> ₹{course.price}
-          </p>
+  {/* Text Section */}
+  <div className="flex-1 min-w-0 flex flex-col justify-center px-2 sm:px-4 py-2 sm:py-4">
+    <h2 className="text-lg sm:text-2xl font-bold text-white mb-2 break-words">
+      {course.title}
+    </h2>
+    <p className="text-gray-400 mb-2 text-xs sm:text-base">{course.description}</p>
+    <p className="text-xs sm:text-sm mb-1">
+      <span className="font-semibold text-white">🎓 Instructor:</span> {course.instructorName}
+    </p>
+    <p className="text-xs sm:text-sm mb-1">
+      <span className="font-semibold text-white">📚 Category:</span> {course.category}
+    </p>
+    <p className="text-xs sm:text-sm mb-3">
+      <span className="font-semibold text-white">💰 Price:</span> ₹{course.price}
+    </p>
 
-          {/* Buy Button */}
-          {shouldShowBuyButton() && (
-            <button
-              className="w-full bg-green-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-700 transition text-sm sm:text-base"
-              onClick={handleBuyCourse}
-            >
-              Buy Now - ₹{course.price}
-            </button>
-          )}
+    {/* Buy Button */}
+    {shouldShowBuyButton() && (
+      <button
+        className="w-full bg-green-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded hover:bg-green-700 transition text-xs sm:text-base"
+        onClick={handleBuyCourse}
+      >
+        Buy Now - ₹{course.price}
+      </button>
+    )}
 
-          {/* Purchased Message */}
-          {isAuthenticated && !isAdmin && !isCourseOwnerCheck() && isPurchased && (
-            <div className="bg-green-800 text-green-200 px-4 py-2 rounded text-sm mt-2">
-              ✅ You have purchased this course
-            </div>
-          )}
-
-          {/* Owner Message */}
-          {isCourseOwnerCheck() && (
-            <div className="bg-blue-800 text-blue-200 px-4 py-2 rounded text-sm mt-2">
-              ✅ You are the instructor of this course
-            </div>
-          )}
-
-          {/* Instructor Actions */}
-          {shouldShowInstructorActions() && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              <button
-                className="bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition text-sm"
-                onClick={() => navigate(`/courses/${course.id}/edit`)}
-              >
-                ✏️ Edit Course
-              </button>
-              <button
-                className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
-                onClick={() => navigate(`/courses/${course.id}/add-video`)}
-              >
-                ➕ Add Videos
-              </button>
-              <button
-                className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700 transition text-sm"
-                onClick={() => navigate(`/courses/${course.id}/students`)}
-              >
-                👥 Enrolled Students
-              </button>
-            </div>
-          )}
-
-          {/* Admin Badge */}
-          {isAdminButNotOwner() && (
-            <div className="mt-3 bg-red-800 text-red-200 px-3 py-1 rounded text-sm text-center">
-              🔧 Admin View - Read Only
-            </div>
-          )}
-        </div>
+    {/* Purchased / Instructor / Admin Messages */}
+    {isAuthenticated && !isAdmin && !isCourseOwnerCheck() && isPurchased && (
+      <div className="bg-green-800 text-green-200 px-2 py-1 rounded text-xs mt-2">
+        ✅ You have purchased this course
       </div>
+    )}
+    {isCourseOwnerCheck() && (
+      <div className="bg-blue-800 text-blue-200 px-2 py-1 rounded text-xs mt-2">
+        ✅ You are the instructor of this course
+      </div>
+    )}
+    {shouldShowInstructorActions() && (
+      <div className="mt-2 flex flex-wrap gap-1 sm:gap-2">
+        <button
+          className="bg-yellow-600 text-white px-2 py-1 rounded hover:bg-yellow-700 transition text-xs"
+          onClick={() => navigate(`/courses/${course.id}/edit`)}
+        >
+          ✏️ Edit Course
+        </button>
+        <button
+          className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition text-xs"
+          onClick={() => navigate(`/courses/${course.id}/add-video`)}
+        >
+          ➕ Add Videos
+        </button>
+        <button
+          className="bg-purple-600 text-white px-2 py-1 rounded hover:bg-purple-700 transition text-xs"
+          onClick={() => navigate(`/courses/${course.id}/students`)}
+        >
+          👥 Enrolled Students
+        </button>
+      </div>
+    )}
+    {isAdminButNotOwner() && (
+      <div className="mt-2 bg-red-800 text-red-200 px-2 py-1 rounded text-xs text-center">
+        🔧 Admin View - Read Only
+      </div>
+    )}
+  </div>
+</div>
+
+
 
       {/* Videos Section */}
       <h4 className="text-xl sm:text-2xl font-semibold my-5">📺 Course Videos</h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-full">
         {course.videos?.length ? (
           course.videos.map((video, idx) => (
-            <div
-              key={video.id}
-              className="bg-gray-800 rounded-lg shadow p-4 flex flex-col justify-between h-full"
-            >
+            <div key={video.id} className="bg-gray-800 rounded-lg shadow p-3 flex flex-col justify-between w-full overflow-hidden">
               <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
                 {canViewVideos() ? (
                   videoUrls[video.id] ? (
                     <iframe
-                      src={
-                        videoUrls[video.id].includes('youtu.be/')
-                          ? videoUrls[video.id]
-                              .replace('https://youtu.be/', 'https://www.youtube.com/embed/')
-                              .split('?')[0]
-                          : videoUrls[video.id].replace('watch?v=', 'embed/')
+                      src={videoUrls[video.id].includes('youtu.be/')
+                        ? videoUrls[video.id].replace('https://youtu.be/', 'https://www.youtube.com/embed/').split('?')[0]
+                        : videoUrls[video.id].replace('watch?v=', 'embed/')
                       }
                       title={`Video ${idx + 1}: ${video.title}`}
                       frameBorder="0"
@@ -281,40 +265,23 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
                   )
                 ) : (
                   <div className="flex justify-center items-center h-full bg-gray-700 text-white rounded absolute top-0 left-0 w-full">
-                    <p className="text-sm text-center px-2">
-                      🔒 {isAuthenticated ? 'Purchase this course to unlock videos' : 'Login and purchase to view videos'}
-                    </p>
+                    <p className="text-sm text-center px-2">🔒 {isAuthenticated ? 'Purchase this course to unlock videos' : 'Login and purchase to view videos'}</p>
                   </div>
                 )}
               </div>
 
               <div className="flex flex-col h-full mt-2">
-                <h6 className="font-medium mb-1">
-                  {idx + 1}. {video.title}
-                </h6>
+                <h6 className="font-medium mb-1">{idx + 1}. {video.title}</h6>
                 <small className="text-gray-400 mb-2">
                   ⏱️ {video.duration} min{' '}
                   {parseFloat(video.duration) < 2 && (
-                    <span className="bg-yellow-300 text-yellow-900 px-2 py-0.5 text-xs rounded ml-2">
-                      Short
-                    </span>
+                    <span className="bg-yellow-300 text-yellow-900 px-2 py-0.5 text-xs rounded ml-2">Short</span>
                   )}
                 </small>
-
                 {shouldShowInstructorActions() && (
                   <div className="mt-auto flex gap-2">
-                    <button
-                      className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-                      onClick={() => navigate(`/videos/updateInfo/${video.id}`)}
-                    >
-                      ✏️ Edit
-                    </button>
-                    <button
-                      className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
-                      onClick={() => handleDeleteVideo(video.id)}
-                    >
-                      🗑️ Delete
-                    </button>
+                    <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700" onClick={() => navigate(`/videos/updateInfo/${video.id}`)}>✏️ Edit</button>
+                    <button className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700" onClick={() => handleDeleteVideo(video.id)}>🗑️ Delete</button>
                   </div>
                 )}
               </div>
@@ -324,12 +291,7 @@ function CourseDetails({ isAuthenticated, userRole, UserId }) {
           <div className="col-span-full text-center py-8">
             <p className="text-gray-400 text-lg">📹 No videos uploaded yet.</p>
             {shouldShowInstructorActions() && (
-              <button
-                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                onClick={() => navigate(`/courses/${course.id}/add-video`)}
-              >
-                ➕ Add First Video
-              </button>
+              <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" onClick={() => navigate(`/courses/${course.id}/add-video`)}>➕ Add First Video</button>
             )}
           </div>
         )}
